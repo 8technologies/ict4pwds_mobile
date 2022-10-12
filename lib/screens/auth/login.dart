@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ict4pwds_mobile/constants/thems.dart';
+import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/screens/auth/register.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/home.dart';
 import 'package:ict4pwds_mobile/widgets/input.dart';

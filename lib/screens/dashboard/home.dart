@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ict4pwds_mobile/constants/thems.dart';
+import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/tabs/dashboard.dart';
 
 class Home extends StatefulWidget {
@@ -34,8 +34,8 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
+      body: SizedBox(
+        //padding: const EdgeInsets.all(20.0),
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
