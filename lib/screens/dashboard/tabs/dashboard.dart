@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
+import 'package:ict4pwds_mobile/widgets/hometile.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -42,117 +43,50 @@ class _DashboardState extends State<Dashboard> {
             ),
           ],
         ),
+        const Padding(
+          padding: EdgeInsets.only(left: 15, top: 15, right: 15),
+          child: Text(
+            "Welcome to ICT4PWD, Choose any service from the list below",
+            style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+          ),
+        ),
         Expanded(
           child: ListView(
             children: <Widget>[
-              GFListTile(
-                color: ArgonColors.offwhite,
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 0, vertical: 0.5),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20),
-                enabled: true,
-                onTap: () {},
-                avatar: const GFAvatar(
-                  backgroundImage:
-                      NetworkImage("https://picsum.photos/id/237/200/300"),
-                ),
-                titleText: 'Services',
-                description: const Text(
-                    'Browser services and service providers',
-                    style: TextStyle(fontSize: 12)),
-                icon: const Icon(Icons.chevron_right),
-              ),
-              GFListTile(
-                color: ArgonColors.offwhite,
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 0, vertical: 0.5),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20),
-                enabled: true,
-                onTap: () {},
-                avatar: const GFAvatar(
-                  backgroundImage:
-                      NetworkImage("https://picsum.photos/id/237/200/300"),
-                ),
-                titleText: 'Guidance and counselling',
-                description: const Text(
-                    'Get access to currated counselling services',
-                    style: TextStyle(fontSize: 12)),
-                icon: const Icon(Icons.chevron_right),
-              ),
-              GFListTile(
-                color: ArgonColors.offwhite,
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 0, vertical: 0.5),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20),
-                enabled: true,
-                onTap: () {},
-                avatar: const GFAvatar(
-                  backgroundImage:
-                      NetworkImage("https://picsum.photos/id/237/200/300"),
-                ),
-                titleText: 'Jobs and Opportunities',
-                description: const Text(
-                    'Browse and access job and employment opportunities',
-                    style: TextStyle(fontSize: 12)),
-                icon: const Icon(Icons.chevron_right),
-              ),
-              GFListTile(
-                color: ArgonColors.offwhite,
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 0, vertical: 0.5),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20),
-                enabled: true,
-                onTap: () {},
-                avatar: const GFAvatar(
-                  backgroundImage:
-                      NetworkImage("https://picsum.photos/id/237/200/300"),
-                ),
-                titleText: 'Donate',
-                description: const Text(
-                    'Support or donate to a charity or cause',
-                    style: TextStyle(fontSize: 12)),
-                icon: const Icon(Icons.chevron_right),
-              ),
-              GFListTile(
-                color: ArgonColors.offwhite,
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 0, vertical: 0.5),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20),
-                enabled: true,
-                onTap: () {},
-                avatar: const GFAvatar(
-                  backgroundImage:
-                      NetworkImage("https://picsum.photos/id/237/200/300"),
-                ),
-                titleText: 'Games and Sports',
-                description: const Text(
-                    'Register to particapate in games and sports',
-                    style: TextStyle(fontSize: 12)),
-                icon: const Icon(Icons.chevron_right),
-              ),
-              GFListTile(
-                color: ArgonColors.offwhite,
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 0, vertical: 0.5),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20),
-                enabled: true,
-                onTap: () {},
-                avatar: const GFAvatar(
-                  backgroundImage:
-                      NetworkImage("https://picsum.photos/id/237/200/300"),
-                ),
-                titleText: 'Testimonies',
-                description: const Text(
-                    'Share your stories and testimonies with the community',
-                    style: TextStyle(fontSize: 12)),
-                icon: const Icon(Icons.chevron_right),
-              ),
+              HomeTile(
+                  iconimage: "assets/img/dashboard/services.png",
+                  titleText: "Services",
+                  descriptionText: "Browser services and service providers",
+                  onTap: () {}),
+              HomeTile(
+                  iconimage: "assets/img/dashboard/talk.png",
+                  titleText: "Guidance and counselling",
+                  descriptionText:
+                      "Get access to currated counselling services",
+                  onTap: () {}),
+              HomeTile(
+                  iconimage: "assets/img/dashboard/jobs.png",
+                  titleText: "Jobs and Opportunities",
+                  descriptionText:
+                      "Browse and access job and employment opportunities",
+                  onTap: () {}),
+              HomeTile(
+                  iconimage: "assets/img/dashboard/donate.png",
+                  titleText: "Donante",
+                  descriptionText: "Support or donate to a charity or cause",
+                  onTap: () {}),
+              HomeTile(
+                  iconimage: "assets/img/dashboard/sport.png",
+                  titleText: "Games and Sports",
+                  descriptionText:
+                      "Register to particapate in games and sports",
+                  onTap: () {}),
+              HomeTile(
+                  iconimage: "assets/img/dashboard/speaker.png",
+                  titleText: "Testimonies",
+                  descriptionText:
+                      "Share your stories and testimonies with the community",
+                  onTap: () {}),
             ],
           ),
         ),

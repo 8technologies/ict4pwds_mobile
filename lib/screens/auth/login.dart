@@ -54,7 +54,7 @@ class _LoginState extends State<Login> {
           ),
           const SizedBox(
             width: double.infinity,
-            child: Input(placeholder: "Password"),
+            child: Input(placeholder: "Password", isPassword: true),
           ),
           const SizedBox(
             height: 10.0,
@@ -107,6 +107,7 @@ class _LoginState extends State<Login> {
   }
 
   loginFunction() {
+    // validate input
     Future(() {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const Home()));
