@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
+import 'package:ict4pwds_mobile/models/user.dart';
 import 'package:ict4pwds_mobile/screens/auth/register.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/home.dart';
+import 'package:bootstrap_alert/bootstrap_alert.dart';
 import 'package:ict4pwds_mobile/widgets/input.dart';
 
 class Login extends StatefulWidget {
@@ -14,103 +16,154 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) return "Email is required";
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) return "Password is required";
+    return null;
+  }
+
+  // ignore: non_constant_identifier_names
+  bool auth_passed = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Row(
-            children: const <Widget>[
-              SizedBox(
-                  child: Image(
-                image: AssetImage('assets/img/logo.png'),
-                height: 70,
-                width: 70,
-              )),
-            ],
-          ),
-          const SizedBox(
-            height: 15.0,
-          ),
-          const SizedBox(
-              width: double.infinity,
-              child: Text(
-                "Sign In",
-                style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.left,
-              )),
-          const SizedBox(
-            height: 15.0,
-          ),
-          const SizedBox(
-            width: double.infinity,
-            child: Input(placeholder: "Email Address"),
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          const SizedBox(
-            width: double.infinity,
-            child: Input(placeholder: "Password", isPassword: true),
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: TextButton(
-                onPressed: () {
-                  loginFunction();
-                },
-                style: TextButton.styleFrom(
-                    backgroundColor: ArgonColors.primary,
-                    padding: const EdgeInsets.only(top: 15, bottom: 15)),
-                child: const Text(
-                  "Login",
-                  style: TextStyle(color: ArgonColors.white),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Row(
+              children: const <Widget>[
+                SizedBox(
+                    child: Image(
+                  image: AssetImage('assets/img/logo.png'),
+                  height: 70,
+                  width: 70,
                 )),
-          ),
-          const SizedBox(height: 15),
-          SizedBox(
-            width: double.infinity,
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Future(() {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Register()));
-                    });
-                  },
-                  child: const Text(
-                    'Create Account',
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                const Text(
-                  'Reset Password',
-                  textAlign: TextAlign.right,
-                )
               ],
             ),
-          ),
-        ],
+            const SizedBox(
+              height: 15.0,
+            ),
+            const SizedBox(
+                width: double.infinity,
+                child: Text(
+                  "Sign In",
+                  style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.left,
+                )),
+            const SizedBox(
+              height: 15.0,
+            ),
+            SizedBox(
+                child: BootstrapAlert(
+              visible: auth_passed,
+              text: 'User Authentication failed',
+              status: AlertStatus.danger,
+            )),
+            SizedBox(
+              width: double.infinity,
+              child: Input(
+                placeholder: "Email Address",
+                prefixIcon: const Icon(Icons.email),
+                controller: emailController,
+                validator: validateEmail,
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: Input(
+                placeholder: "Password",
+                isPassword: true,
+                prefixIcon: const Icon(Icons.lock),
+                controller: passwordController,
+                validator: validatePassword,
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: TextButton(
+                  onPressed: () {
+                    loginFunction();
+                  },
+                  style: TextButton.styleFrom(
+                      backgroundColor: ArgonColors.primary,
+                      padding: const EdgeInsets.only(top: 15, bottom: 15)),
+                  child: const Text(
+                    "Login",
+                    style: TextStyle(color: ArgonColors.white),
+                  )),
+            ),
+            const SizedBox(height: 15),
+            SizedBox(
+              width: double.infinity,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Future(() {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Register()));
+                      });
+                    },
+                    child: const Text(
+                      'Create Account',
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  const Text(
+                    'Reset Password',
+                    textAlign: TextAlign.right,
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     ));
   }
 
-  loginFunction() {
-    // validate input
-    Future(() {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const Home()));
+  loginFunction() async {
+    setState(() {
+      auth_passed = false;
     });
+    if (_formKey.currentState!.validate()) {
+      var authed =
+          await User.authUser(emailController.text, passwordController.text);
+
+    
+      if (authed == false) {
+        setState(() {
+          auth_passed = true;
+        });
+        return;
+      }
+
+      Future(() {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const Home()));
+      });
+    }
   }
 }

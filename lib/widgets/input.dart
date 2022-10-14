@@ -12,6 +12,7 @@ class Input extends StatelessWidget {
       this.autofocus = false,
       this.borderColor = ArgonColors.border,
       this.isPassword = false,
+      this.validator,
       this.controller});
 
   final String? placeholder;
@@ -23,12 +24,14 @@ class Input extends StatelessWidget {
   final bool autofocus;
   final Color borderColor;
   final bool isPassword;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
         cursorColor: ArgonColors.muted,
         onTap: onTap,
+        validator: validator,
         onChanged: onChanged,
         obscureText: isPassword,
         controller: controller,
@@ -44,6 +47,16 @@ class Input extends StatelessWidget {
             ),
             suffixIcon: suffixIcon,
             prefixIcon: prefixIcon,
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                    color: ArgonColors.error, width: 1.0, style: BorderStyle.solid)
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                    color: ArgonColors.error, width: 1.0, style: BorderStyle.solid)
+            ),
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(4.0),
                 borderSide: BorderSide(
