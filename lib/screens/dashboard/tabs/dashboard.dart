@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/pages/jobs.dart';
 import 'package:ict4pwds_mobile/widgets/hometile.dart';
 
 class Dashboard extends StatefulWidget {
@@ -69,7 +70,10 @@ class _DashboardState extends State<Dashboard> {
                   titleText: "Jobs and Opportunities",
                   descriptionText:
                       "Browse and access job and employment opportunities",
-                  onTap: () {}),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const Job()));
+                  }),
               HomeTile(
                   iconimage: "assets/img/dashboard/donate.png",
                   titleText: "Donante",

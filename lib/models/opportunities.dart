@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:ict4pwds_mobile/constants/config.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Opportunity {
   final int? id;
@@ -29,23 +26,24 @@ class Opportunity {
   factory Opportunity.fromJson(Map<String, dynamic> json) {
     return Opportunity(
         id: json['id'],
-        opportunityTitle: json['opportunityTitle'],
-        nameOfProvider: json['nameOfProvider'],
+        opportunityTitle: json['opportunity_title'],
+        nameOfProvider: json['name_of_provider'],
         description: json['description'],
-        addressOfProvider: json['addressOfProvider'],
-        opportunityCategory: json['opportunityCategory'],
-        typeOfOffer: json['typeOfOffer'],
-        startDate: json['startDate'],
-        deadlineDate: json['deadlineDate']);
+        addressOfProvider: json['address_of_provider'],
+        opportunityCategory: json['opportunity_category'],
+        typeOfOffer: json['type_of_offer'],
+        startDate: json['start_date'],
+        deadlineDate: json['deadline_date']);
   }
 
   Future<List<Opportunity>> fetchData() async {
-    var url = "${Config.apiBaseUrl}/accounts/login";
+    var url = "${Config.apiBaseUrl}/opportunities/";
     try {
+      var token = await Config.getUserToken();
       var dio = Dio();
-      dio.options.headers["Authorization"] = "Bearer";
+      dio.options.headers["Authorization"] = "Bearer $token";
       Response response = await dio.get(url);
-      List jsonResponse = json.decode(response.data);
+      List jsonResponse = response.data;
       return jsonResponse.map((data) => Opportunity.fromJson(data)).toList();
     } on DioError catch (e) {
       // ignore: avoid_print

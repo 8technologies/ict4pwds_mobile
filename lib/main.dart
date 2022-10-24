@@ -11,7 +11,7 @@ Future<void> main() async {
   if (prefs.getString("access") != null && prefs.getString("refresh") != null) {
     intialRoute = "/home";
   }
-  
+
   runApp(MyApp(isLoggedin: intialRoute));
 }
 
