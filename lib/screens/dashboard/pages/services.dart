@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:ict4pwds_mobile/constants/helpers.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
-import 'package:ict4pwds_mobile/models/opportunities.dart';
+import 'package:ict4pwds_mobile/models/Service.dart';
 import 'package:ict4pwds_mobile/widgets/page_header.dart';
 
-class Job extends StatefulWidget {
-  const Job({Key? key}) : super(key: key);
+class Services extends StatefulWidget {
+  const Services({Key? key}) : super(key: key);
 
   @override
-  State<Job> createState() => _JobState();
+  State<Services> createState() => _ServicesState();
 }
 
-class _JobState extends State<Job> {
-  Opportunity opportunity = Opportunity();
-  Future<List<Opportunity>>? futureData;
+class _ServicesState extends State<Services> {
+  Service service = Service();
+  Future<List<Service>>? futureData;
 
   @override
   void initState() {
-    futureData = opportunity.fetchData();
+    futureData = service.fetchData();
     super.initState();
   }
 
@@ -29,12 +29,12 @@ class _JobState extends State<Job> {
         padding: const EdgeInsets.only(top: 15),
         child: Column(
           children: <Widget>[
-            const PageHeader(title: 'Jobs and Opportunities'),
-            FutureBuilder<List<Opportunity>>(
+            const PageHeader(title: 'Services'),
+            FutureBuilder<List<Service>>(
               future: futureData,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  List<Opportunity>? data = snapshot.data;
+                  List<Service>? data = snapshot.data;
                   if (data!.isEmpty) {
                     return Column(
                       children: [
@@ -44,7 +44,7 @@ class _JobState extends State<Job> {
                           height: 100,
                         ),
                         const SizedBox(height: 15),
-                        const Text("No Opportunities found, check again later"),
+                        const Text("No Servies found, check again later"),
                       ],
                     );
                   }
