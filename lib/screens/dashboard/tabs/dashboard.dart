@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/pages/Games.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/pages/jobs.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/pages/services.dart';
 import 'package:ict4pwds_mobile/widgets/hometile.dart';
@@ -59,8 +60,12 @@ class _DashboardState extends State<Dashboard> {
                   iconimage: "assets/img/dashboard/services.png",
                   titleText: "Services",
                   descriptionText: "Browser services and service providers",
-                  onTap: () {Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const Services()));}),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Services()));
+                  }),
               HomeTile(
                   iconimage: "assets/img/dashboard/talk.png",
                   titleText: "Guidance and counselling",
@@ -86,7 +91,10 @@ class _DashboardState extends State<Dashboard> {
                   titleText: "Games and Sports",
                   descriptionText:
                       "Register to particapate in games and sports",
-                  onTap: () {}),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const Games()));
+                  }),
               HomeTile(
                   iconimage: "assets/img/dashboard/speaker.png",
                   titleText: "Testimonies",
