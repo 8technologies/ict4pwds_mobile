@@ -13,9 +13,8 @@ class PageHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(top: 5),
+          padding: const EdgeInsets.only(top: 15),
           child: SizedBox(
-              height: 40,
               child: TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -24,9 +23,8 @@ class PageHeader extends StatelessWidget {
                       const Icon(Icons.arrow_back, color: ArgonColors.black))),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 5, top: 22),
+          padding: const EdgeInsets.only(left: 5, top: 15),
           child: SizedBox(
-            height: 40,
             child: Text(
               title,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),

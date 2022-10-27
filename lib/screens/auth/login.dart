@@ -11,8 +11,6 @@ class Login extends StatefulWidget {
 
   @override
   State<Login> createState() => _LoginState();
-
-  void login() {}
 }
 
 class _LoginState extends State<Login> {
@@ -119,12 +117,7 @@ class _LoginState extends State<Login> {
                 children: <Widget>[
                   TextButton(
                     onPressed: () {
-                      Future(() {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Register()));
-                      });
+                      Navigator.pushNamed(context, "/register");
                     },
                     child: const Text(
                       'Create Account',
@@ -152,7 +145,6 @@ class _LoginState extends State<Login> {
       var authed =
           await User.authUser(emailController.text, passwordController.text);
 
-    
       if (authed == false) {
         setState(() {
           auth_passed = true;
@@ -161,8 +153,8 @@ class _LoginState extends State<Login> {
       }
 
       Future(() {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const Home()));
+        var router = MaterialPageRoute(builder: (context) => const Home());
+        Navigator.pushAndRemoveUntil(context, router, (route) => false);
       });
     }
   }

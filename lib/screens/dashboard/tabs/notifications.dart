@@ -2,23 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:ict4pwds_mobile/constants/helpers.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
-import 'package:ict4pwds_mobile/models/Game.dart';
-import 'package:ict4pwds_mobile/widgets/page_header.dart';
+import 'package:ict4pwds_mobile/models/user_notification.dart';
 
-class Games extends StatefulWidget {
-  const Games({Key? key}) : super(key: key);
+class Notifications extends StatefulWidget {
+  const Notifications({Key? key}) : super(key: key);
 
   @override
-  State<Games> createState() => _GamesState();
+  State<Notifications> createState() => _NotificationsState();
 }
 
-class _GamesState extends State<Games> {
-  Game game = Game();
-  Future<List<Game>>? futureData;
+class _NotificationsState extends State<Notifications> {
+  UserNotification userNotification = UserNotification();
+  Future<List<UserNotification>>? futureData;
 
   @override
   void initState() {
-    futureData = game.fetchData();
+    futureData = userNotification.fetchData();
     super.initState();
   }
 
@@ -30,12 +29,26 @@ class _GamesState extends State<Games> {
         padding: const EdgeInsets.only(top: 15),
         child: Column(
           children: <Widget>[
-            const PageHeader(title: 'Games and Sports'),
-            FutureBuilder<List<Game>>(
+            Padding(
+              padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const <Widget>[
+                  SizedBox(
+                      child: Text("Notifications",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w600))),
+                  SizedBox(
+                      child: Icon(Icons.notifications)),
+                ],
+              ),
+            ),
+            FutureBuilder<List<UserNotification>>(
               future: futureData,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  List<Game>? data = snapshot.data;
+                  List<UserNotification>? data = snapshot.data;
                   if (data!.isEmpty) {
                     return Column(
                       children: [
@@ -45,7 +58,7 @@ class _GamesState extends State<Games> {
                           height: 100,
                         ),
                         const SizedBox(height: 15),
-                        const Text("No Servies found, check again later"),
+                        const Text("You do not have any notifications"),
                       ],
                     );
                   }
@@ -53,8 +66,8 @@ class _GamesState extends State<Games> {
                       child: ListView.builder(
                           itemCount: data.length,
                           itemBuilder: (BuildContext context, int index) {
-                            String title = data[index].gameName ?? 'Title';
-                            String subtitle = 'At: ${data[index].venue}';
+                            String title = data[index].message ?? 'Title';
+                            String subtitle = 'At: ${data[index].category}';
                             //String oppType = data[index].typeOfOffer ?? 'Free';
                             // String offerBy =
                             //     'By: ${data[index].nameOfProvider}';

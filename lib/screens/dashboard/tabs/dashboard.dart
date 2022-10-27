@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:getwidget/getwidget.dart';
-import 'package:ict4pwds_mobile/constants/themes.dart';
+import 'package:ict4pwds_mobile/constants/config.dart';
+import 'package:ict4pwds_mobile/models/user.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/pages/Games.dart';
-import 'package:ict4pwds_mobile/screens/dashboard/pages/jobs.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/pages/guidances.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/pages/opportunities.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/pages/services.dart';
 import 'package:ict4pwds_mobile/widgets/hometile.dart';
 
@@ -14,34 +15,51 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  void getUser() async {
+    var user = await User.getUserFromToken();
+    setState(() {
+      name = "Hello ${user['first_name']}";
+      url = "${Config.baseUrl}${user['profile_pic']}";
+    });
+  }
+
+  String name = "Hello ";
+  String url = "http://23.29.118.237/uploads/2.jpg";
+
+  @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         const SizedBox(
-          height: 45,
+          height: 30,
         ),
         Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const <Widget>[
+          children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(left: 15, top: 10),
+              padding: const EdgeInsets.only(left: 15, top: 22),
               child: SizedBox(
                 height: 40,
                 child: Text(
-                  "Hello Ivan",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+                  name,
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.w600),
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(right: 15),
+              padding: const EdgeInsets.only(right: 15),
               child: SizedBox(
                   height: 35,
                   child: CircleAvatar(
-                    backgroundImage:
-                        NetworkImage('https://picsum.photos/id/237/200/300'),
+                    backgroundImage: NetworkImage(url),
                   )),
             ),
           ],
@@ -59,7 +77,7 @@ class _DashboardState extends State<Dashboard> {
               HomeTile(
                   iconimage: "assets/img/dashboard/services.png",
                   titleText: "Services",
-                  descriptionText: "Browser services and service providers",
+                  descriptionText: "Browse services and service providers",
                   onTap: () {
                     Navigator.push(
                         context,
@@ -70,20 +88,27 @@ class _DashboardState extends State<Dashboard> {
                   iconimage: "assets/img/dashboard/talk.png",
                   titleText: "Guidance and counselling",
                   descriptionText:
-                      "Get access to currated counselling services",
-                  onTap: () {}),
+                      "Get access to guidance and counseling services",
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Guidencies()));
+                  }),
               HomeTile(
                   iconimage: "assets/img/dashboard/jobs.png",
                   titleText: "Jobs and Opportunities",
                   descriptionText:
                       "Browse and access job and employment opportunities",
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const Job()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Opportunities()));
                   }),
               HomeTile(
                   iconimage: "assets/img/dashboard/donate.png",
-                  titleText: "Donante",
+                  titleText: "Charity services",
                   descriptionText: "Support or donate to a charity or cause",
                   onTap: () {}),
               HomeTile(

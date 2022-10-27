@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:ict4pwds_mobile/constants/helpers.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
-import 'package:ict4pwds_mobile/models/opportunities.dart';
+import 'package:ict4pwds_mobile/models/opportunity.dart';
 import 'package:ict4pwds_mobile/widgets/page_header.dart';
 
-class Job extends StatefulWidget {
-  const Job({Key? key}) : super(key: key);
+class Opportunities extends StatefulWidget {
+  const Opportunities({Key? key}) : super(key: key);
 
   @override
-  State<Job> createState() => _JobState();
+  State<Opportunities> createState() => _OpportunitiesState();
 }
 
-class _JobState extends State<Job> {
+class _OpportunitiesState extends State<Opportunities> {
   Opportunity opportunity = Opportunity();
   Future<List<Opportunity>>? futureData;
 
@@ -61,31 +62,31 @@ class _JobState extends State<Job> {
                                 'By: ${data[index].nameOfProvider}';
                             String category =
                                 'category: ${data[index].opportunityCategory}';
-                            return Card(
-                                child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                ListTile(
-                                  trailing: const Icon(Icons.chevron_right),
-                                  title: Text(oppTitle),
-                                  subtitle: Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: Text(Helpers.truncateString("is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries", 100)),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15),
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 3, bottom: 10),
-                                      child: Text(offerBy),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ));
+                            return GFListTile(
+                              color: ArgonColors.offwhite,
+                              margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 0.8),
+                              padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20),
+                              avatar: const GFAvatar(
+                                  backgroundImage: NetworkImage('http://23.29.118.237/uploads/2.jpg'),
+                                  shape: GFAvatarShape.standard),
+                              title: Text(
+                                oppTitle,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              subTitle: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5),
+                                child: Text(offerBy),
+                              ),
+                              icon: Padding(
+                                padding: const EdgeInsets.only(top: 12),
+                                child: Text(oppType,
+                                    style: const TextStyle(
+                                        color: ArgonColors.primary,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                            );
                           }));
                 }
                 return Padding(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
-import 'package:ict4pwds_mobile/screens/auth/login.dart';
 import 'package:ict4pwds_mobile/widgets/input.dart';
 
 class Register extends StatefulWidget {
@@ -86,12 +85,7 @@ class _RegisterState extends State<Register> {
               children: <Widget>[
                 TextButton(
                   onPressed: () {
-                    Future(() {
-                      Navigator.pop(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Login()));
-                    });
+                    Navigator.of(context).pop();
                   },
                   child: const Text(
                     'Login Here',

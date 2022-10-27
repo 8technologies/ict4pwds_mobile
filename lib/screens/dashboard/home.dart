@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/tabs/dashboard.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/tabs/notifications.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/tabs/settings.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -11,18 +13,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     Dashboard(),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+    Notifications(),
+    Settings()
   ];
 
   void _onItemTapped(int index) {

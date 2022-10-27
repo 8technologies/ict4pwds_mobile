@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:ict4pwds_mobile/constants/config.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class User {
@@ -18,5 +19,25 @@ class User {
     }
 
     return returned;
+  }
+
+  static getUserFromToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString("access") != null &&
+        prefs.getString("refresh") != null) {
+      var token = prefs.getString("access");
+      var user = JwtDecoder.decode(token!);
+      return user;
+    }
+    return null;
+  }
+
+  static deleteUserToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString("access") != null &&
+        prefs.getString("refresh") != null) {
+      prefs.remove("access");
+      prefs.remove("refresh");
+    }
   }
 }
