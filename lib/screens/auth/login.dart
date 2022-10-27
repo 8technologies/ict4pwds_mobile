@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/models/user.dart';
-import 'package:ict4pwds_mobile/screens/auth/register.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/home.dart';
 import 'package:bootstrap_alert/bootstrap_alert.dart';
 import 'package:ict4pwds_mobile/widgets/input.dart';
@@ -28,8 +27,8 @@ class _LoginState extends State<Login> {
     return null;
   }
 
-  // ignore: non_constant_identifier_names
-  bool auth_passed = false;
+  bool authPassed = false;
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +64,7 @@ class _LoginState extends State<Login> {
             ),
             SizedBox(
                 child: BootstrapAlert(
-              visible: auth_passed,
+              visible: authPassed,
               text: 'User Authentication failed',
               status: AlertStatus.danger,
             )),
@@ -103,10 +102,18 @@ class _LoginState extends State<Login> {
                   style: TextButton.styleFrom(
                       backgroundColor: ArgonColors.primary,
                       padding: const EdgeInsets.only(top: 15, bottom: 15)),
-                  child: const Text(
-                    "Login",
-                    style: TextStyle(color: ArgonColors.white),
-                  )),
+                  child: isLoading
+                      ? const SizedBox(
+                          height: 15,
+                          width: 15,
+                          child: CircularProgressIndicator(
+                            color: ArgonColors.white,
+                            strokeWidth: 1,
+                          ))
+                      : const Text(
+                          "Login",
+                          style: TextStyle(color: ArgonColors.white),
+                        )),
             ),
             const SizedBox(height: 15),
             SizedBox(
@@ -139,7 +146,8 @@ class _LoginState extends State<Login> {
 
   loginFunction() async {
     setState(() {
-      auth_passed = false;
+      authPassed = false;
+      isLoading = true;
     });
     if (_formKey.currentState!.validate()) {
       var authed =
@@ -147,7 +155,8 @@ class _LoginState extends State<Login> {
 
       if (authed == false) {
         setState(() {
-          auth_passed = true;
+          authPassed = true;
+          isLoading = false;
         });
         return;
       }

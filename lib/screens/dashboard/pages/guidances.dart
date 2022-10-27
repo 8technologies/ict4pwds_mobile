@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ict4pwds_mobile/constants/helpers.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
-import 'package:ict4pwds_mobile/models/Service.dart';
+import 'package:ict4pwds_mobile/models/guidance.dart';
 import 'package:ict4pwds_mobile/widgets/page_header.dart';
+import 'package:ict4pwds_mobile/widgets/styledTile.dart';
 
 class Guidencies extends StatefulWidget {
   const Guidencies({Key? key}) : super(key: key);
@@ -12,12 +13,12 @@ class Guidencies extends StatefulWidget {
 }
 
 class _GuidenciesState extends State<Guidencies> {
-  Service service = Service();
-  Future<List<Service>>? futureData;
+  Guidance guidance = Guidance();
+  Future<List<Guidance>>? futureData;
 
   @override
   void initState() {
-    futureData = service.fetchData();
+    futureData = guidance.fetchData();
     super.initState();
   }
 
@@ -30,11 +31,11 @@ class _GuidenciesState extends State<Guidencies> {
         child: Column(
           children: <Widget>[
             const PageHeader(title: 'Guidance and counseling'),
-            FutureBuilder<List<Service>>(
+            FutureBuilder<List<Guidance>>(
               future: futureData,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  List<Service>? data = snapshot.data;
+                  List<Guidance>? data = snapshot.data;
                   if (data!.isEmpty) {
                     return Column(
                       children: [
@@ -52,40 +53,14 @@ class _GuidenciesState extends State<Guidencies> {
                       child: ListView.builder(
                           itemCount: data.length,
                           itemBuilder: (BuildContext context, int index) {
-                            String oppTitle =
-                                data[index].opportunityTitle ?? 'default';
-                            String oppDescription =
-                                data[index].description ?? 'default';
-                            String oppType = data[index].typeOfOffer ?? 'Free';
-                            String offerBy =
-                                'By: ${data[index].nameOfProvider}';
-                            String category =
-                                'category: ${data[index].opportunityCategory}';
-                            return Card(
-                                child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                ListTile(
-                                  trailing: const Icon(Icons.chevron_right),
-                                  title: Text(oppTitle),
-                                  subtitle: Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: Text(Helpers.truncateString("is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries", 100)),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15),
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 3, bottom: 10),
-                                      child: Text(offerBy),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ));
+                            String title = data[index].centerName ?? 'default';
+                            String subtitle = data[index].location ?? 'default';
+                            String caption = "${data[index].serviceFee} UGX";
+                            return StyledTile(
+                                onTap: () {},
+                                title: title,
+                                subtitle: subtitle,
+                                caption: caption);
                           }));
                 }
                 return Padding(
