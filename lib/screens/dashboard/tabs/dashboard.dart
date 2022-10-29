@@ -1,0 +1,135 @@
+import 'package:flutter/material.dart';
+import 'package:ict4pwds_mobile/constants/config.dart';
+import 'package:ict4pwds_mobile/models/user.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/pages/Games.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/pages/guidances.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/pages/opportunities.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/pages/services.dart';
+import 'package:ict4pwds_mobile/widgets/hometile.dart';
+
+class Dashboard extends StatefulWidget {
+  const Dashboard({Key? key}) : super(key: key);
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  void getUser() async {
+    var user = await User.getUserFromToken();
+    setState(() {
+      name = "Hello ${user['first_name']}";
+      url = "${Config.baseUrl}${user['profile_pic']}";
+    });
+  }
+
+  String name = "Hello ";
+  String url = "http://23.29.118.237/uploads/2.jpg";
+
+  @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        const SizedBox(
+          height: 30,
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 22),
+              child: SizedBox(
+                height: 40,
+                child: Text(
+                  name,
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.w600),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: SizedBox(
+                  height: 35,
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(url),
+                  )),
+            ),
+          ],
+        ),
+        const Padding(
+          padding: EdgeInsets.only(left: 15, top: 15, right: 15),
+          child: Text(
+            "Welcome to ICT4PWD, Choose any service from the list below",
+            style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+          ),
+        ),
+        Expanded(
+          child: ListView(
+            children: <Widget>[
+              HomeTile(
+                  iconimage: "assets/img/dashboard/services.png",
+                  titleText: "Services",
+                  descriptionText: "Browse services and service providers",
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Services()));
+                  }),
+              HomeTile(
+                  iconimage: "assets/img/dashboard/talk.png",
+                  titleText: "Guidance and counselling",
+                  descriptionText:
+                      "Get access to guidance and counseling services",
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Guidencies()));
+                  }),
+              HomeTile(
+                  iconimage: "assets/img/dashboard/jobs.png",
+                  titleText: "Jobs and Opportunities",
+                  descriptionText:
+                      "Browse and access job and employment opportunities",
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Opportunities()));
+                  }),
+              HomeTile(
+                  iconimage: "assets/img/dashboard/donate.png",
+                  titleText: "Charity services",
+                  descriptionText: "Support or donate to a charity or cause",
+                  onTap: () {}),
+              HomeTile(
+                  iconimage: "assets/img/dashboard/sport.png",
+                  titleText: "Games and Sports",
+                  descriptionText:
+                      "Register to particapate in games and sports",
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const Games()));
+                  }),
+              HomeTile(
+                  iconimage: "assets/img/dashboard/speaker.png",
+                  titleText: "Testimonies",
+                  descriptionText:
+                      "Share your stories and testimonies with the community",
+                  onTap: () {}),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
