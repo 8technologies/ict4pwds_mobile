@@ -52,15 +52,11 @@ class _ServicesState extends State<Services> {
                       child: ListView.builder(
                           itemCount: data.length,
                           itemBuilder: (BuildContext context, int index) {
-                            String oppTitle =
-                                data[index].opportunityTitle ?? 'default';
-                            String oppDescription =
-                                data[index].description ?? 'default';
-                            String oppType = data[index].typeOfOffer ?? 'Free';
-                            String offerBy =
-                                'By: ${data[index].nameOfProvider}';
-                            String category =
-                                'category: ${data[index].opportunityCategory}';
+                            String oppTitle = "ivan";
+                            String oppDescription = "ivan";
+                            String oppType = "ivan";
+                            String offerBy = "ivan";
+                            String category = "ivan";
                             return Card(
                                 child: Column(
                               mainAxisSize: MainAxisSize.min,
