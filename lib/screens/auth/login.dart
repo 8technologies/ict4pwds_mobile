@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ict4pwds_mobile/constants/helpers.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/models/user.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/home.dart';
@@ -16,16 +17,6 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  String? validateEmail(String? value) {
-    if (value == null || value.isEmpty) return "Email is required";
-    return null;
-  }
-
-  String? validatePassword(String? value) {
-    if (value == null || value.isEmpty) return "Password is required";
-    return null;
-  }
 
   bool authPassed = false;
   bool isLoading = false;
@@ -74,7 +65,7 @@ class _LoginState extends State<Login> {
                 placeholder: "Email Address",
                 prefixIcon: const Icon(Icons.email),
                 controller: emailController,
-                validator: validateEmail,
+                validator: Helpers.validateEmail,
               ),
             ),
             const SizedBox(
@@ -87,7 +78,7 @@ class _LoginState extends State<Login> {
                 isPassword: true,
                 prefixIcon: const Icon(Icons.lock),
                 controller: passwordController,
-                validator: validatePassword,
+                validator: Helpers.validatePassword,
               ),
             ),
             const SizedBox(
@@ -166,5 +157,8 @@ class _LoginState extends State<Login> {
         Navigator.pushAndRemoveUntil(context, router, (route) => false);
       });
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 }
