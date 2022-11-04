@@ -41,7 +41,9 @@ class User {
       await Dio().post(url, data: data);
       return "success";
     } on DioError catch (e) {
-      print(e);
+      var message = e.response!.data['username'] ?? "Error creating Account";
+      if (message == "Error creating Account") return "Error creating Account";
+      return "Account already registered";
     }
   }
 
