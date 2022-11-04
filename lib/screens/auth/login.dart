@@ -20,6 +20,8 @@ class _LoginState extends State<Login> {
 
   bool authPassed = false;
   bool isLoading = false;
+  String errorMessage = "No error";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +58,7 @@ class _LoginState extends State<Login> {
             SizedBox(
                 child: BootstrapAlert(
               visible: authPassed,
-              text: 'User Authentication failed',
+              text: errorMessage,
               status: AlertStatus.danger,
             )),
             SizedBox(
@@ -144,10 +146,11 @@ class _LoginState extends State<Login> {
       var authed =
           await User.authUser(emailController.text, passwordController.text);
 
-      if (authed == false) {
+      if (authed != "success") {
         setState(() {
           authPassed = true;
           isLoading = false;
+          errorMessage = authed;
         });
         return;
       }

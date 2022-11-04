@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class User {
   static authUser(String username, String password) async {
-    bool returned = true;
     var data = {'username': username, 'password': password};
     var url = "${Config.apiBaseUrl}/accounts/login";
 
@@ -15,11 +14,13 @@ class User {
       final prefs = await SharedPreferences.getInstance();
       prefs.setString("access", response.data['access']);
       prefs.setString("refresh", response.data['refresh']);
-    } on DioError {
-      returned = false;
-    }
+      return "success";
+    } on DioError catch (e) {
+      var error = e.response!.data['error'] ?? "Error Authenticating User";
+      if (error == "Error Authenticating User") return "Error Authenticating User";
+      return error[0];
 
-    return returned;
+    }
   }
 
   static createUser(String name, String email, String password) async {
