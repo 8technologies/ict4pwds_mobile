@@ -19,12 +19,14 @@ class _DashboardState extends State<Dashboard> {
     var user = await User.getUserFromToken();
     setState(() {
       name = "Hello ${user['first_name']}";
-      url = "${Config.baseUrl}${user['profile_pic']}";
+      if (user['profile_pic'] != null) {
+        url = "${Config.baseUrl}${user['profile_pic']}";
+      }
     });
   }
 
   String name = "Hello ";
-  String url = "http://23.29.118.237/uploads/2.jpg";
+  String url = "default";
 
   @override
   void initState() {
@@ -58,9 +60,13 @@ class _DashboardState extends State<Dashboard> {
               padding: const EdgeInsets.only(right: 15),
               child: SizedBox(
                   height: 35,
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(url),
-                  )),
+                  child: url == 'default'
+                      ? const CircleAvatar(
+                          backgroundImage: AssetImage('assets/img/profile.png'),
+                        )
+                      : CircleAvatar(
+                          backgroundImage: NetworkImage(url),
+                        )),
             ),
           ],
         ),
