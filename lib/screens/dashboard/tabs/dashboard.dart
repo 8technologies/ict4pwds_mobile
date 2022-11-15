@@ -113,11 +113,6 @@ class _DashboardState extends State<Dashboard> {
                             builder: (context) => const Opportunities()));
                   }),
               HomeTile(
-                  iconimage: "assets/img/dashboard/donate.png",
-                  titleText: "Charity services",
-                  descriptionText: "Support or donate to a charity or cause",
-                  onTap: () {}),
-              HomeTile(
                   iconimage: "assets/img/dashboard/sport.png",
                   titleText: "Games and Sports",
                   descriptionText:

@@ -55,7 +55,7 @@ class _GamesState extends State<Games> {
                           itemCount: data.length,
                           itemBuilder: (BuildContext context, int index) {
                             String title = data[index].gameName!;
-                            String cover_image = data[index].coverImage!;
+                            String coverImage = data[index].coverImage!;
                             String subtitle = 'At: ${data[index].venue}';
                             String organiser =
                                 'Organised by: ${data[index].organiser}';
@@ -68,7 +68,8 @@ class _GamesState extends State<Games> {
                               onTap: () {
                                 Game game = data[index];
                                 var route = MaterialPageRoute(
-                                    builder: (context) => SingleGame(game: game));
+                                    builder: (context) =>
+                                        SingleGame(game: game));
                                 Navigator.push(context, route);
                               },
                               child: GFCard(
@@ -79,7 +80,7 @@ class _GamesState extends State<Games> {
                                 boxFit: BoxFit.cover,
                                 titlePosition: GFPosition.start,
                                 image: Image(
-                                  image: NetworkImage(cover_image),
+                                  image: NetworkImage(coverImage),
                                   height:
                                       MediaQuery.of(context).size.height * 0.2,
                                   width: MediaQuery.of(context).size.width,

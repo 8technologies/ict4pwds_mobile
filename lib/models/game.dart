@@ -49,7 +49,7 @@ class Game {
   }
 
   Future<List<Game>> fetchData() async {
-    var url = "${Config.apiBaseUrl}/games_and_sports/";
+    var url = "${Config.apiBaseUrl}/games_and_sports/games/";
     try {
       var token = await Config.getUserToken();
       var dio = Dio();
