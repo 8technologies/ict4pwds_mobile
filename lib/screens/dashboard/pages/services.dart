@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:ict4pwds_mobile/constants/helpers.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/models/Service.dart';
@@ -29,7 +30,7 @@ class _ServicesState extends State<Services> {
         padding: const EdgeInsets.only(top: 15),
         child: Column(
           children: <Widget>[
-            const PageHeader(title: 'Services'),
+            const PageHeader(title: 'Service Providers'),
             FutureBuilder<List<Service>>(
               future: futureData,
               builder: (context, snapshot) {
@@ -52,36 +53,36 @@ class _ServicesState extends State<Services> {
                       child: ListView.builder(
                           itemCount: data.length,
                           itemBuilder: (BuildContext context, int index) {
-                            String oppTitle = "ivan";
-                            String oppDescription = "ivan";
-                            String oppType = "ivan";
-                            String offerBy = "ivan";
-                            String category = "ivan";
-                            return Card(
-                                child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                ListTile(
-                                  trailing: const Icon(Icons.chevron_right),
-                                  title: Text(oppTitle),
-                                  subtitle: Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: Text(Helpers.truncateString("is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries", 100)),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15),
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 3, bottom: 10),
-                                      child: Text(offerBy),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ));
+                            String url = data[index].image ?? "no_image";
+                            return GFListTile(
+                              onTap: () {
+                                //todo: add on click here
+                              },
+                              color: ArgonColors.offwhite,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 0, vertical: 0.8),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 12),
+                              icon: const Icon(Icons.chevron_right),
+                              avatar: url == "no_image"
+                                  ? const GFAvatar(
+                                      backgroundImage:
+                                          AssetImage('assets/img/empty.png'),
+                                      shape: GFAvatarShape.standard)
+                                  : GFAvatar(
+                                      backgroundImage: NetworkImage(url),
+                                      shape: GFAvatarShape.standard),
+                              title: Text(
+                                data[index].name!,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              subTitle: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5),
+                                child: Text(Helpers.truncateString(data[index].description!, 50)),
+                              ),
+                            );
                           }));
                 }
                 return Padding(

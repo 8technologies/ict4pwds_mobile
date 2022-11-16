@@ -3,7 +3,8 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Config {
-  static const String baseUrl = "http://23.29.118.237";
+  static const String baseUrl =
+      "https://observatory.ict4personswithdisabilities.org";
   static const String apiBaseUrl = "${Config.baseUrl}/api";
 
   static Future getUserToken() async {

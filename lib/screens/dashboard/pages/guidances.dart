@@ -3,7 +3,7 @@ import 'package:ict4pwds_mobile/constants/helpers.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/models/guidance.dart';
 import 'package:ict4pwds_mobile/widgets/page_header.dart';
-import 'package:ict4pwds_mobile/widgets/styledTile.dart';
+import 'package:ict4pwds_mobile/widgets/styled_tile.dart';
 
 class Guidencies extends StatefulWidget {
   const Guidencies({Key? key}) : super(key: key);
@@ -50,18 +50,20 @@ class _GuidenciesState extends State<Guidencies> {
                     );
                   }
                   return Expanded(
-                      child: ListView.builder(
-                          itemCount: data.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            String title = data[index].centerName ?? 'default';
-                            String subtitle = data[index].location ?? 'default';
-                            String caption = "${data[index].serviceFee} UGX";
-                            return StyledTile(
-                                onTap: () {},
-                                title: title,
-                                subtitle: subtitle,
-                                caption: caption);
-                          }));
+                    child: ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        //String caption = "${data[index].serviceFee} UGX";
+                        return StyledTile(
+                          onTap: () {},
+                          url: data[index].image ?? "no_image",
+                          title: data[index].centerName ?? 'default',
+                          subtitle: data[index].location ?? 'default',
+                          //caption: caption,
+                        );
+                      },
+                    ),
+                  );
                 }
                 return Padding(
                   padding: EdgeInsets.only(

@@ -59,7 +59,7 @@ class _SettingsState extends State<Settings> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(
-                  top: 20, left: 20, right: 20, bottom: 0),
+                  top: 20, left: 15, right: 15, bottom: 0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -83,15 +83,16 @@ class _SettingsState extends State<Settings> {
                     margin:
                         const EdgeInsets.symmetric(horizontal: 0, vertical: 2),
                     color: ArgonColors.bgColorScreen,
-                    avatar: url == 'default' 
-                    ? const GFAvatar(
-                      backgroundImage: AssetImage('assets/img/profile.png'),
-                      size: GFSize.MEDIUM,
-                    )
-                    : GFAvatar(
-                      backgroundImage: NetworkImage(url),
-                      size: GFSize.MEDIUM,
-                    ),
+                    avatar: url == 'default'
+                        ? const GFAvatar(
+                            backgroundImage:
+                                AssetImage('assets/img/profile.png'),
+                            size: GFSize.MEDIUM,
+                          )
+                        : GFAvatar(
+                            backgroundImage: NetworkImage(url),
+                            size: GFSize.MEDIUM,
+                          ),
                     titleText: name,
                     subTitleText:
                         'Update you basic account information like email, phone etc',

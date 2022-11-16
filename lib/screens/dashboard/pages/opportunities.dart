@@ -1,12 +1,12 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:flutter/material.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:ict4pwds_mobile/constants/helpers.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/models/opportunity.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/pages/single/single_opportunity.dart';
 import 'package:ict4pwds_mobile/widgets/page_header.dart';
+import 'package:ict4pwds_mobile/widgets/styled_tile.dart';
 
 class Opportunities extends StatefulWidget {
   const Opportunities({Key? key}) : super(key: key);
@@ -53,55 +53,36 @@ class _OpportunitiesState extends State<Opportunities> {
                     );
                   }
                   return Expanded(
-                      child: ListView.builder(
-                          itemCount: data.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            String url = data[index].logo!;
-                            String oppTitle = data[index].opportunityTitle!;
-                            String category = data[index].opportunityCategory!;
-                            String offerBy = data[index].nameOfProvider!;
-
-                            return GFListTile(
-                              onTap: () {
-                                Opportunity opportunity = data[index];
-                                var route = MaterialPageRoute(
-                                    builder: (context) => SingleOpportunity(
-                                        opportunity: opportunity));
-                                Navigator.push(context, route);
-                              },
-                              color: ArgonColors.offwhite,
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 0.8),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 12),
-                              avatar: GFAvatar(
-                                  backgroundImage: NetworkImage(url),
-                                  shape: GFAvatarShape.standard),
-                              title: Text(
-                                oppTitle,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              subTitle: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5),
-                                child: Text(offerBy),
-                              ),
-                              icon: Text(category,
-                                  style: const TextStyle(
-                                      color: ArgonColors.primary)),
-                            );
-                          }));
+                    child: ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return StyledTile(
+                          onTap: () {
+                            Opportunity opportunity = data[index];
+                            var route = MaterialPageRoute(
+                                builder: (context) => SingleOpportunity(
+                                    opportunity: opportunity));
+                            Navigator.push(context, route);
+                          },
+                          url: data[index].logo ?? "no_image",
+                          title: data[index].opportunityTitle ?? "No title",
+                          subtitle: data[index].nameOfProvider ??
+                              "Opportunity Offered By",
+                        );
+                      },
+                    ),
+                  );
                 }
                 return Padding(
                   padding: EdgeInsets.only(
                       top: Helpers.displayHeight(context) * 0.15),
                   child: const SizedBox(
-                      height: 35,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 1,
-                        color: ArgonColors.primary,
-                      )),
+                    height: 35,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 1,
+                      color: ArgonColors.primary,
+                    ),
+                  ),
                 );
               },
             )

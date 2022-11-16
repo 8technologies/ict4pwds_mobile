@@ -4,6 +4,7 @@ import 'package:ict4pwds_mobile/constants/config.dart';
 class Service {
   final int? id;
   final int? serviceProvider;
+  final String? image;
   final String? serviceProviderNames;
   final String? name;
   final String? serviceType;
@@ -13,6 +14,7 @@ class Service {
   Service(
       {this.id,
       this.serviceProvider,
+      this.image,
       this.serviceProviderNames,
       this.name,
       this.serviceType,
@@ -23,6 +25,7 @@ class Service {
     return Service(
         id: json['id'],
         serviceProvider: json['service_provider'],
+        image: json['image'],
         serviceProviderNames: json['service_provider_names'],
         name: json['name'],
         serviceType: json['service_type'],

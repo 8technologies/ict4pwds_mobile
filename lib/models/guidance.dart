@@ -3,18 +3,20 @@ import 'package:ict4pwds_mobile/constants/config.dart';
 
 class Guidance {
   final int? id;
+  final String? image;
   final String? centerName;
   final String? phoneNumber;
   final String? emailAdress;
   final String? location;
   final String? servicesOffered;
   final int? serviceFee;
-  final int? category;
+  final String? category;
   final String? updated;
   final String? timestamp;
 
   Guidance(
       {this.id,
+      this.image,
       this.centerName,
       this.phoneNumber,
       this.emailAdress,
@@ -29,13 +31,14 @@ class Guidance {
   factory Guidance.fromJson(Map<String, dynamic> json) {
     return Guidance(
         id: json['id'],
+        image: json['logo'],
         centerName: json['center_name'],
         phoneNumber: json['phone_number'],
         emailAdress: json['email_address'],
         location: json['location'],
         servicesOffered: json['services_offered'],
         serviceFee: json['service_fee'],
-        category: json['category_of_persons_with_disabilities'],
+        category: json['category_of_persons_with_disabilities']['name'],
         updated: json['updated'],
         timestamp: json['timestamp']
       );
@@ -50,9 +53,7 @@ class Guidance {
       Response response = await dio.get(url);
       List jsonResponse = response.data;
       return jsonResponse.map((data) => Guidance.fromJson(data)).toList();
-    } on DioError catch (e) {
-      // ignore: avoid_print
-      print(e);
+    } on DioError {
       List<Guidance> returnedData = [];
       return returnedData;
     }

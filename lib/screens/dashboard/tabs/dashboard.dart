@@ -82,7 +82,7 @@ class _DashboardState extends State<Dashboard> {
             children: <Widget>[
               HomeTile(
                   iconimage: "assets/img/dashboard/services.png",
-                  titleText: "Services",
+                  titleText: "Service Providers",
                   descriptionText: "Browse services and service providers",
                   onTap: () {
                     Navigator.push(
