@@ -23,7 +23,7 @@ class _SingleOpportunityState extends State<SingleOpportunity> {
         padding: const EdgeInsets.only(top: 15),
         child: Column(
           children: [
-            PageHeader(title: widget.opportunity.opportunityCategory!),
+            const PageHeader(title: "Opportunity Details"),
             Expanded(
               child: ListView(
                 children: <Widget>[

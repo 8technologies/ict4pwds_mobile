@@ -60,8 +60,9 @@ class _OpportunitiesState extends State<Opportunities> {
                           onTap: () {
                             Opportunity opportunity = data[index];
                             var route = MaterialPageRoute(
-                                builder: (context) => SingleOpportunity(
-                                    opportunity: opportunity));
+                              builder: (context) =>
+                                  SingleOpportunity(opportunity: opportunity),
+                            );
                             Navigator.push(context, route);
                           },
                           url: data[index].logo ?? "no_image",

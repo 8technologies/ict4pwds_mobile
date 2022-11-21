@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:ict4pwds_mobile/constants/helpers.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
-import 'package:ict4pwds_mobile/models/Service.dart';
+import 'package:ict4pwds_mobile/models/service.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/pages/single/single_service.dart';
 import 'package:ict4pwds_mobile/widgets/page_header.dart';
 
 class Services extends StatefulWidget {
@@ -56,7 +57,13 @@ class _ServicesState extends State<Services> {
                             String url = data[index].image ?? "no_image";
                             return GFListTile(
                               onTap: () {
-                                //todo: add on click here
+                                Service service = data[index];
+                                var route = MaterialPageRoute(
+                                  builder: (context) => SingleService(
+                                    service: service,
+                                  ),
+                                );
+                                Navigator.push(context, route);
                               },
                               color: ArgonColors.offwhite,
                               margin: const EdgeInsets.symmetric(
@@ -80,7 +87,8 @@ class _ServicesState extends State<Services> {
                               subTitle: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 5),
-                                child: Text(Helpers.truncateString(data[index].description!, 50)),
+                                child: Text(Helpers.truncateString(
+                                    data[index].description!, 50)),
                               ),
                             );
                           }));
