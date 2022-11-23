@@ -3,7 +3,8 @@ import 'package:getwidget/getwidget.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/models/opportunity.dart';
 import 'package:ict4pwds_mobile/widgets/page_header.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+
 
 class SingleOpportunity extends StatefulWidget {
   const SingleOpportunity({Key? key, required this.opportunity})
@@ -28,13 +29,18 @@ class _SingleOpportunityState extends State<SingleOpportunity> {
               child: ListView(
                 children: <Widget>[
                   GFListTile(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 0, vertical: 0),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 0, horizontal: 20),
-                    avatar: GFAvatar(
-                        backgroundImage:
-                            NetworkImage(widget.opportunity.logo!)),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                    avatar: widget.opportunity.logo == null
+                        ? const GFAvatar(
+                            backgroundImage: AssetImage('assets/img/empty.png'),
+                          )
+                        : GFAvatar(
+                            backgroundImage:
+                                NetworkImage(widget.opportunity.logo!),
+                          ),
                     title: Text(widget.opportunity.opportunityTitle!,
                         style: const TextStyle(
                             color: ArgonColors.primary, fontSize: 16)),
@@ -44,9 +50,9 @@ class _SingleOpportunityState extends State<SingleOpportunity> {
                     ),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    child: Html(data: widget.opportunity.description),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 10),
+                    child: HtmlWidget(widget.opportunity.description!),
                   )
                 ],
               ),

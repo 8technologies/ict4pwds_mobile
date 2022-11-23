@@ -81,26 +81,28 @@ class _DashboardState extends State<Dashboard> {
           child: ListView(
             children: <Widget>[
               HomeTile(
-                  iconimage: "assets/img/dashboard/services.png",
-                  titleText: "Service Providers",
-                  descriptionText: "Browse services and service providers",
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Services()));
-                  }),
+                iconimage: "assets/img/dashboard/services.png",
+                titleText: "Service Providers",
+                descriptionText: "Browse services and service providers",
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Services()));
+                },
+              ),
               HomeTile(
-                  iconimage: "assets/img/dashboard/talk.png",
-                  titleText: "Guidance and counselling",
-                  descriptionText:
-                      "Get access to guidance and counseling services",
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Guidencies()));
-                  }),
+                iconimage: "assets/img/dashboard/talk.png",
+                titleText: "Guidance and counselling",
+                descriptionText:
+                    "Get access to guidance and counseling services",
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Guidencies()));
+                },
+              ),
               HomeTile(
                   iconimage: "assets/img/dashboard/jobs.png",
                   titleText: "Jobs and Opportunities",
@@ -113,20 +115,22 @@ class _DashboardState extends State<Dashboard> {
                             builder: (context) => const Opportunities()));
                   }),
               HomeTile(
-                  iconimage: "assets/img/dashboard/sport.png",
-                  titleText: "Games and Sports",
-                  descriptionText:
-                      "Register to particapate in games and sports",
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const Games()));
-                  }),
+                iconimage: "assets/img/dashboard/news.png",
+                titleText: "News and Events",
+                descriptionText:
+                    "Get the latest updates and events from different providers and organisations",
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Games()));
+                },
+              ),
               HomeTile(
-                  iconimage: "assets/img/dashboard/speaker.png",
-                  titleText: "Testimonies",
-                  descriptionText:
-                      "Share your stories and testimonies with the community",
-                  onTap: () {}),
+                iconimage: "assets/img/dashboard/info.png",
+                titleText: "Information Bank",
+                descriptionText:
+                    "Access information, publications and other useful resources",
+                onTap: () {},
+              ),
             ],
           ),
         ),

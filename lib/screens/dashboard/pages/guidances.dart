@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ict4pwds_mobile/constants/helpers.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/models/guidance.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/pages/single/single_guidance.dart';
 import 'package:ict4pwds_mobile/widgets/page_header.dart';
 import 'package:ict4pwds_mobile/widgets/styled_tile.dart';
 
@@ -55,7 +56,15 @@ class _GuidenciesState extends State<Guidencies> {
                       itemBuilder: (BuildContext context, int index) {
                         //String caption = "${data[index].serviceFee} UGX";
                         return StyledTile(
-                          onTap: () {},
+                          onTap: () {
+                            Guidance guidance = data[index];
+                            var route = MaterialPageRoute(
+                              builder: (context) => SingleGuidance(
+                                guidance: guidance,
+                              ),
+                            );
+                            Navigator.push(context, route);
+                          },
                           url: data[index].image ?? "no_image",
                           title: data[index].centerName ?? 'default',
                           subtitle: data[index].location ?? 'default',
