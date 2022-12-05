@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ict4pwds_mobile/constants/helpers.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/models/user.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/home.dart';
@@ -17,18 +18,10 @@ class _LoginState extends State<Login> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  String? validateEmail(String? value) {
-    if (value == null || value.isEmpty) return "Email is required";
-    return null;
-  }
-
-  String? validatePassword(String? value) {
-    if (value == null || value.isEmpty) return "Password is required";
-    return null;
-  }
-
   bool authPassed = false;
   bool isLoading = false;
+  String errorMessage = "No error";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +58,7 @@ class _LoginState extends State<Login> {
             SizedBox(
                 child: BootstrapAlert(
               visible: authPassed,
-              text: 'User Authentication failed',
+              text: errorMessage,
               status: AlertStatus.danger,
             )),
             SizedBox(
@@ -74,7 +67,7 @@ class _LoginState extends State<Login> {
                 placeholder: "Email Address",
                 prefixIcon: const Icon(Icons.email),
                 controller: emailController,
-                validator: validateEmail,
+                validator: Helpers.validateEmail,
               ),
             ),
             const SizedBox(
@@ -87,7 +80,7 @@ class _LoginState extends State<Login> {
                 isPassword: true,
                 prefixIcon: const Icon(Icons.lock),
                 controller: passwordController,
-                validator: validatePassword,
+                validator: Helpers.validatePassword,
               ),
             ),
             const SizedBox(
@@ -153,10 +146,11 @@ class _LoginState extends State<Login> {
       var authed =
           await User.authUser(emailController.text, passwordController.text);
 
-      if (authed == false) {
+      if (authed != "success") {
         setState(() {
           authPassed = true;
           isLoading = false;
+          errorMessage = authed;
         });
         return;
       }
@@ -166,5 +160,8 @@ class _LoginState extends State<Login> {
         Navigator.pushAndRemoveUntil(context, router, (route) => false);
       });
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 }

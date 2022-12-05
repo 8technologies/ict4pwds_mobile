@@ -30,7 +30,8 @@ class _NotificationsState extends State<Notifications> {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 0),
+              padding: const EdgeInsets.only(
+                  top: 20, left: 15, right: 15, bottom: 0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,8 +40,7 @@ class _NotificationsState extends State<Notifications> {
                       child: Text("Notifications",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w600))),
-                  SizedBox(
-                      child: Icon(Icons.notifications)),
+                  SizedBox(child: Icon(Icons.notifications)),
                 ],
               ),
             ),

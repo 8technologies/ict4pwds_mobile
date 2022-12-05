@@ -4,6 +4,7 @@ import 'package:ict4pwds_mobile/constants/config.dart';
 class Game {
   final int? id;
   final String? gameName;
+  final String? coverImage;
   final String? description;
   final String? playingGuidelines;
   final String? venue;
@@ -17,6 +18,7 @@ class Game {
 
   Game(
       {this.id,
+      this.coverImage,
       this.gameName,
       this.description,
       this.playingGuidelines,
@@ -33,6 +35,7 @@ class Game {
     return Game(
         id: json['id'],
         gameName: json['game_name'],
+        coverImage: json['cover_image'],
         description: json['description'],
         playingGuidelines: json['playing_guidelines'],
         venue: json['venue'],
@@ -46,13 +49,13 @@ class Game {
   }
 
   Future<List<Game>> fetchData() async {
-    var url = "${Config.apiBaseUrl}/games_and_sports/";
+    var url = "${Config.apiBaseUrl}/games_and_sports/games/";
     try {
       var token = await Config.getUserToken();
       var dio = Dio();
       dio.options.headers["Authorization"] = "Bearer $token";
       Response response = await dio.get(url);
-      List jsonResponse = response.data;
+      List jsonResponse = response.data["results"];
       return jsonResponse.map((data) => Game.fromJson(data)).toList();
     } on DioError catch (e) {
       // ignore: avoid_print
