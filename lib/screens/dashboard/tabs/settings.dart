@@ -4,6 +4,8 @@ import 'package:ict4pwds_mobile/constants/config.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/models/user.dart';
 import 'package:ict4pwds_mobile/screens/auth/login.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/tabs/settings/additional.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/tabs/settings/profile.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -65,9 +67,12 @@ class _SettingsState extends State<Settings> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const <Widget>[
                   SizedBox(
-                      child: Text("Account settings",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w600))),
+                    child: Text(
+                      "Account settings",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                    ),
+                  ),
                   SizedBox(child: Icon(Icons.settings)),
                 ],
               ),
@@ -78,6 +83,12 @@ class _SettingsState extends State<Settings> {
                   const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
               children: <Widget>[
                 GFListTile(
+                    onTap: () {
+                      var route = MaterialPageRoute(
+                        builder: (context) => const Profile(),
+                      );
+                      Navigator.push(context, route);
+                    },
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 12),
                     margin:
@@ -98,10 +109,16 @@ class _SettingsState extends State<Settings> {
                         'Update you basic account information like email, phone etc',
                     icon: const Icon(Icons.person_outline)),
                 GFListTile(
+                    onTap: () {
+                      var route = MaterialPageRoute(
+                        builder: (context) => const Additional(),
+                      );
+                      Navigator.push(context, route);
+                    },
                     color: ArgonColors.bgColorScreen,
                     margin: tileMarging,
                     padding: tilePadding,
-                    titleText: 'Additional Information',
+                    titleText: 'Care taker information',
                     subTitleText:
                         'Add information about your Next of kin, care taker and other information',
                     icon: const Icon(Icons.people_outline_outlined)),

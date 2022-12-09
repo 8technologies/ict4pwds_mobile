@@ -35,11 +35,12 @@ class _LoginState extends State<Login> {
             Row(
               children: const <Widget>[
                 SizedBox(
-                    child: Image(
-                  image: AssetImage('assets/img/logo.png'),
-                  height: 70,
-                  width: 70,
-                )),
+                  child: Image(
+                    image: AssetImage('assets/img/logo.png'),
+                    height: 70,
+                    width: 70,
+                  ),
+                ),
               ],
             ),
             const SizedBox(
@@ -89,24 +90,25 @@ class _LoginState extends State<Login> {
             SizedBox(
               width: double.infinity,
               child: TextButton(
-                  onPressed: () {
-                    loginFunction();
-                  },
-                  style: TextButton.styleFrom(
-                      backgroundColor: ArgonColors.primary,
-                      padding: const EdgeInsets.only(top: 15, bottom: 15)),
-                  child: isLoading
-                      ? const SizedBox(
-                          height: 15,
-                          width: 15,
-                          child: CircularProgressIndicator(
-                            color: ArgonColors.white,
-                            strokeWidth: 1,
-                          ))
-                      : const Text(
-                          "Login",
-                          style: TextStyle(color: ArgonColors.white),
-                        )),
+                onPressed: () {
+                  loginFunction();
+                },
+                style: TextButton.styleFrom(
+                    backgroundColor: ArgonColors.primary,
+                    padding: const EdgeInsets.only(top: 15, bottom: 15)),
+                child: isLoading
+                    ? const SizedBox(
+                        height: 15,
+                        width: 15,
+                        child: CircularProgressIndicator(
+                          color: ArgonColors.white,
+                          strokeWidth: 1,
+                        ))
+                    : const Text(
+                        "Login",
+                        style: TextStyle(color: ArgonColors.white),
+                      ),
+              ),
             ),
             const SizedBox(height: 15),
             SizedBox(

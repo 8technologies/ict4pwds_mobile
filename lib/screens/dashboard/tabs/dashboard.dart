@@ -116,7 +116,17 @@ class _DashboardState extends State<Dashboard> {
                   }),
               HomeTile(
                 iconimage: "assets/img/dashboard/news.png",
-                titleText: "News and Events",
+                titleText: "News",
+                descriptionText:
+                    "Get the latest updates and events from different providers and organisations",
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Games()));
+                },
+              ),
+              HomeTile(
+                iconimage: "assets/img/dashboard/sport.png",
+                titleText: "Events",
                 descriptionText:
                     "Get the latest updates and events from different providers and organisations",
                 onTap: () {
