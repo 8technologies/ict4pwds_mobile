@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ict4pwds_mobile/constants/config.dart';
 import 'package:ict4pwds_mobile/models/user.dart';
-import 'package:ict4pwds_mobile/screens/dashboard/pages/Games.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/pages/guidances.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/pages/news_and_events.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/pages/opportunities.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/pages/services.dart';
 import 'package:ict4pwds_mobile/widgets/hometile.dart';
@@ -116,22 +116,14 @@ class _DashboardState extends State<Dashboard> {
                   }),
               HomeTile(
                 iconimage: "assets/img/dashboard/news.png",
-                titleText: "News",
+                titleText: "News and Events",
                 descriptionText:
                     "Get the latest updates and events from different providers and organisations",
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Games()));
-                },
-              ),
-              HomeTile(
-                iconimage: "assets/img/dashboard/sport.png",
-                titleText: "Events",
-                descriptionText:
-                    "Get the latest updates and events from different providers and organisations",
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Games()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NewsAndEvents()));
                 },
               ),
               HomeTile(
