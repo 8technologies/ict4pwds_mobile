@@ -17,50 +17,47 @@ class _SingleServiceState extends State<SingleService> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ArgonColors.white,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 15),
-        child: Column(
-          children: [
-            const PageHeader(title: "Provider Details"),
-            Expanded(
-              child: ListView(
-                children: <Widget>[
-                  GFListTile(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                    avatar: widget.service.image == null
-                        ? const GFAvatar(
-                            backgroundImage: AssetImage('assets/img/empty.png'),
-                          )
-                        : GFAvatar(
-                            backgroundImage:
-                                NetworkImage(widget.service.image!),
-                          ),
-                    title: Text(widget.service.name ?? "Provider Name",
-                        style: const TextStyle(
-                            color: ArgonColors.primary, fontSize: 16)),
-                    subTitle: Text(
-                      "Fee: ${widget.service.serviceFee!} UGX",
-                      style: const TextStyle(color: ArgonColors.muted),
-                    ),
+      body: Column(
+        children: [
+          const PageHeader(title: "Provider Details"),
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                GFListTile(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                  avatar: widget.service.image == null
+                      ? const GFAvatar(
+                          backgroundImage: AssetImage('assets/img/empty.png'),
+                        )
+                      : GFAvatar(
+                          backgroundImage:
+                              NetworkImage(widget.service.image!),
+                        ),
+                  title: Text(widget.service.name ?? "Provider Name",
+                      style: const TextStyle(
+                          color: ArgonColors.primary, fontSize: 16)),
+                  subTitle: Text(
+                    "Fee: ${widget.service.serviceFee!} UGX",
+                    style: const TextStyle(color: ArgonColors.muted),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: GFListTile(
-                      description: Padding(
-                        padding: const EdgeInsets.only(top: 5),
-                        child: Text(widget.service.description!),
-                      ),
-                      subTitle: Text("Service type: ${widget.service.serviceType!}"),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: GFListTile(
+                    description: Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Text(widget.service.description!),
                     ),
+                    subTitle: Text("Service type: ${widget.service.serviceType!}"),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

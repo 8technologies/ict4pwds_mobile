@@ -59,14 +59,15 @@ class _DashboardState extends State<Dashboard> {
             Padding(
               padding: const EdgeInsets.only(right: 15),
               child: SizedBox(
-                  height: 35,
-                  child: url == 'default'
-                      ? const CircleAvatar(
-                          backgroundImage: AssetImage('assets/img/profile.png'),
-                        )
-                      : CircleAvatar(
-                          backgroundImage: NetworkImage(url),
-                        )),
+                height: 35,
+                child: url == 'default'
+                    ? const CircleAvatar(
+                        backgroundImage: AssetImage('assets/img/profile.png'),
+                      )
+                    : CircleAvatar(
+                        backgroundImage: NetworkImage(url),
+                      ),
+              ),
             ),
           ],
         ),
@@ -86,9 +87,11 @@ class _DashboardState extends State<Dashboard> {
                 descriptionText: "Browse services and service providers",
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Services()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Services(),
+                    ),
+                  );
                 },
               ),
               HomeTile(
@@ -98,22 +101,27 @@ class _DashboardState extends State<Dashboard> {
                     "Get access to guidance and counseling services",
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Guidencies()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Guidencies(),
+                    ),
+                  );
                 },
               ),
               HomeTile(
-                  iconimage: "assets/img/dashboard/jobs.png",
-                  titleText: "Jobs and Opportunities",
-                  descriptionText:
-                      "Browse and access job and employment opportunities",
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Opportunities()));
-                  }),
+                iconimage: "assets/img/dashboard/jobs.png",
+                titleText: "Jobs and Opportunities",
+                descriptionText:
+                    "Browse and access job and employment opportunities",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Opportunities(),
+                    ),
+                  );
+                },
+              ),
               HomeTile(
                 iconimage: "assets/img/dashboard/news.png",
                 titleText: "News and Events",
@@ -121,9 +129,11 @@ class _DashboardState extends State<Dashboard> {
                     "Get the latest updates and events from different providers and organisations",
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const NewsAndEvents()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const NewsAndEvents(),
+                    ),
+                  );
                 },
               ),
               HomeTile(

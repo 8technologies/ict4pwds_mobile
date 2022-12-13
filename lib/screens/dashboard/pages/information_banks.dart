@@ -8,14 +8,14 @@ import 'package:ict4pwds_mobile/screens/dashboard/pages/single/single_opportunit
 import 'package:ict4pwds_mobile/widgets/page_header.dart';
 import 'package:ict4pwds_mobile/widgets/styled_tile.dart';
 
-class Opportunities extends StatefulWidget {
-  const Opportunities({Key? key}) : super(key: key);
+class InformationBanks extends StatefulWidget {
+  const InformationBanks({Key? key}) : super(key: key);
 
   @override
-  State<Opportunities> createState() => _OpportunitiesState();
+  State<InformationBanks> createState() => _InformationBanksState();
 }
 
-class _OpportunitiesState extends State<Opportunities> {
+class _InformationBanksState extends State<InformationBanks> {
   Opportunity opportunity = Opportunity();
   Future<List<Opportunity>>? futureData;
 
@@ -31,7 +31,7 @@ class _OpportunitiesState extends State<Opportunities> {
       backgroundColor: ArgonColors.white,
       body: Column(
         children: <Widget>[
-          const PageHeader(title: 'Jobs and Opportunities'),
+          const PageHeader(title: 'Information Bank'),
           FutureBuilder<List<Opportunity>>(
             future: futureData,
             builder: (context, snapshot) {
@@ -46,7 +46,7 @@ class _OpportunitiesState extends State<Opportunities> {
                         height: 100,
                       ),
                       const SizedBox(height: 15),
-                      const Text("No Opportunities found, check again later"),
+                      const Text("No InformationBanks found, check again later"),
                     ],
                   );
                 }

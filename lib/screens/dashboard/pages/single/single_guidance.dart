@@ -17,58 +17,55 @@ class _SingleGuidanceState extends State<SingleGuidance> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ArgonColors.white,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 15),
-        child: Column(
-          children: [
-            const PageHeader(title: "Guidance Details"),
-            Expanded(
-              child: ListView(
-                children: <Widget>[
-                  GFListTile(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                    avatar: widget.guidance.image == null
-                        ? const GFAvatar(
-                            backgroundImage: AssetImage('assets/img/empty.png'),
-                          )
-                        : GFAvatar(
-                            backgroundImage:
-                                NetworkImage(widget.guidance.image!),
-                          ),
-                    title: Text(widget.guidance.centerName!,
-                        style: const TextStyle(
-                            color: ArgonColors.primary, fontSize: 16)),
-                    subTitle: Text(
-                      "Service Fee: ${widget.guidance.serviceFee} UGX",
-                      style: const TextStyle(color: ArgonColors.muted),
-                    ),
+      body: Column(
+        children: [
+          const PageHeader(title: "Guidance Details"),
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                GFListTile(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                  avatar: widget.guidance.image == null
+                      ? const GFAvatar(
+                          backgroundImage: AssetImage('assets/img/empty.png'),
+                        )
+                      : GFAvatar(
+                          backgroundImage:
+                              NetworkImage(widget.guidance.image!),
+                        ),
+                  title: Text(widget.guidance.centerName!,
+                      style: const TextStyle(
+                          color: ArgonColors.primary, fontSize: 16)),
+                  subTitle: Text(
+                    "Service Fee: ${widget.guidance.serviceFee} UGX",
+                    style: const TextStyle(color: ArgonColors.muted),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: GFListTile(
-                      description: Text(widget.guidance.servicesOffered!),
-                    ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: GFListTile(
+                    description: Text(widget.guidance.servicesOffered!),
                   ),
-                  GFListTile(
-                    avatar: const Icon(Icons.location_on),
-                    title: Text(widget.guidance.location!),
-                  ),
-                  GFListTile(
-                    avatar: const Icon(Icons.email),
-                    title: Text(widget.guidance.emailAdress!),
-                  ),
-                  GFListTile(
-                    avatar: const Icon(Icons.phone),
-                    title: Text(widget.guidance.phoneNumber!),
-                  ),
-                ],
-              ),
+                ),
+                GFListTile(
+                  avatar: const Icon(Icons.location_on),
+                  title: Text(widget.guidance.location!),
+                ),
+                GFListTile(
+                  avatar: const Icon(Icons.email),
+                  title: Text(widget.guidance.emailAdress!),
+                ),
+                GFListTile(
+                  avatar: const Icon(Icons.phone),
+                  title: Text(widget.guidance.phoneNumber!),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
