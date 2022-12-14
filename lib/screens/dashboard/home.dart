@@ -48,7 +48,7 @@ class _HomeState extends State<Home> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: ArgonColors.primary,
+        selectedItemColor: ArgonColors.black,
         onTap: _onItemTapped,
       ),
     );

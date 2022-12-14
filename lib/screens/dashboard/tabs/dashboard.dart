@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ict4pwds_mobile/constants/config.dart';
+import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/models/user.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/pages/guidances.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/pages/information_banks.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/pages/news_and_events.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/pages/opportunities.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/pages/services.dart';
@@ -16,7 +18,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   void getUser() async {
-    var user = await User.getUserFromToken();
+    var user = await User.getPrefUser();
     setState(() {
       name = "Hello ${user['first_name']}";
       if (user['profile_pic'] != null) {
@@ -38,48 +40,74 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        const SizedBox(
-          height: 30,
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 15, top: 22),
-              child: SizedBox(
-                height: 40,
+        Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              stops: [
+                0.4,
+                0.6,
+              ],
+              colors: [
+                ArgonColors.inputSuccess,
+                Color.fromARGB(255, 83, 211, 198),
+              ],
+            ),
+          ),
+          child: Column(
+            children: <Widget>[
+              const SizedBox(
+                height: 30,
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15, top: 22),
+                    child: SizedBox(
+                      height: 40,
+                      child: Text(
+                        name,
+                        style: const TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 15),
+                    child: SizedBox(
+                      height: 35,
+                      child: url == 'default'
+                          ? const CircleAvatar(
+                              backgroundColor: ArgonColors.white,
+                              backgroundImage: AssetImage(
+                                'assets/img/profile.png',
+                              ),
+                            )
+                          : CircleAvatar(
+                              backgroundColor: ArgonColors.white,
+                              backgroundImage: NetworkImage(url),
+                            ),
+                    ),
+                  ),
+                ],
+              ),
+              const Padding(
+                padding:
+                    EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 25),
                 child: Text(
-                  name,
-                  style: const TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.w600),
+                  "Welcome to ICT4PWD, Choose any service from the list below",
+                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 15),
-              child: SizedBox(
-                height: 35,
-                child: url == 'default'
-                    ? const CircleAvatar(
-                        backgroundImage: AssetImage('assets/img/profile.png'),
-                      )
-                    : CircleAvatar(
-                        backgroundImage: NetworkImage(url),
-                      ),
-              ),
-            ),
-          ],
-        ),
-        const Padding(
-          padding: EdgeInsets.only(left: 15, top: 15, right: 15),
-          child: Text(
-            "Welcome to ICT4PWD, Choose any service from the list below",
-            style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+            ],
           ),
         ),
         Expanded(
           child: ListView(
+            padding: MediaQuery.of(context).padding.copyWith(top: 2),
             children: <Widget>[
               HomeTile(
                 iconimage: "assets/img/dashboard/services.png",
@@ -141,7 +169,14 @@ class _DashboardState extends State<Dashboard> {
                 titleText: "Information Bank",
                 descriptionText:
                     "Access information, publications and other useful resources",
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const InformationBanks(),
+                    ),
+                  );
+                },
               ),
             ],
           ),

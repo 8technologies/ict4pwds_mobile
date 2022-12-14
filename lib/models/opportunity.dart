@@ -8,22 +8,23 @@ class Opportunity {
   final String? nameOfProvider;
   final String? description;
   final String? addressOfProvider;
-  final String? opportunityCategory;
+  final int? opportunityCategory;
   final String? typeOfOffer;
   final String? startDate;
   final String? deadlineDate;
 
-  Opportunity(
-      {this.id,
-      this.logo,
-      this.opportunityTitle,
-      this.nameOfProvider,
-      this.description,
-      this.addressOfProvider,
-      this.opportunityCategory,
-      this.typeOfOffer,
-      this.startDate,
-      this.deadlineDate});
+  Opportunity({
+    this.id,
+    this.logo,
+    this.opportunityTitle,
+    this.nameOfProvider,
+    this.description,
+    this.addressOfProvider,
+    this.opportunityCategory,
+    this.typeOfOffer,
+    this.startDate,
+    this.deadlineDate,
+  });
 
   factory Opportunity.fromJson(Map<String, dynamic> json) {
     return Opportunity(
@@ -33,7 +34,7 @@ class Opportunity {
         nameOfProvider: json['name_of_provider'],
         description: json['description'],
         addressOfProvider: json['address_of_provider'],
-        opportunityCategory: json['opportunity_category']['name'],
+        opportunityCategory: json['opportunity_category'],
         typeOfOffer: json['type_of_offer'],
         startDate: json['start_date'],
         deadlineDate: json['deadline_date']);

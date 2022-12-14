@@ -36,15 +36,15 @@ class _RegisterState extends State<Register> {
             Row(
               children: const <Widget>[
                 SizedBox(
-                    child: Image(
-                  image: AssetImage('assets/img/logo.png'),
-                  height: 70,
-                  width: 70,
-                )),
+                  child: Image(
+                    image: AssetImage('assets/img/logo2.png'),
+                    height: 90,
+                  ),
+                ),
               ],
             ),
             const SizedBox(
-              height: 15.0,
+              height: 20.0,
             ),
             const SizedBox(
                 width: double.infinity,
@@ -57,11 +57,12 @@ class _RegisterState extends State<Register> {
               height: 15.0,
             ),
             SizedBox(
-                child: BootstrapAlert(
-              visible: hasError,
-              text: errorMessage,
-              status: AlertStatus.danger,
-            )),
+              child: BootstrapAlert(
+                visible: hasError,
+                text: errorMessage,
+                status: AlertStatus.danger,
+              ),
+            ),
             SizedBox(
               width: double.infinity,
               child: Input(
@@ -99,24 +100,27 @@ class _RegisterState extends State<Register> {
             SizedBox(
               width: double.infinity,
               child: TextButton(
-                  onPressed: () {
-                    registerFunction();
-                  },
-                  style: TextButton.styleFrom(
-                      backgroundColor: ArgonColors.primary,
-                      padding: const EdgeInsets.only(top: 15, bottom: 15)),
-                  child: isLoading
-                      ? const SizedBox(
-                          height: 15,
-                          width: 15,
-                          child: CircularProgressIndicator(
-                            color: ArgonColors.white,
-                            strokeWidth: 1,
-                          ))
-                      : const Text(
-                          "Create Account",
-                          style: TextStyle(color: ArgonColors.white),
-                        )),
+                onPressed: () {
+                  registerFunction();
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: ArgonColors.mainGreen,
+                  padding: const EdgeInsets.only(top: 15, bottom: 15),
+                ),
+                child: isLoading
+                    ? const SizedBox(
+                        height: 15,
+                        width: 15,
+                        child: CircularProgressIndicator(
+                          color: ArgonColors.black,
+                          strokeWidth: 1,
+                        ),
+                      )
+                    : const Text(
+                        "Create Account",
+                        style: TextStyle(color: ArgonColors.black),
+                      ),
+              ),
             ),
             const SizedBox(
               height: 10,
@@ -167,7 +171,6 @@ class _RegisterState extends State<Register> {
         Route route = MaterialPageRoute(builder: (context) => const Activate());
         Navigator.pushReplacement(context, route);
       });
-
     }
     setState(() {
       isLoading = false;

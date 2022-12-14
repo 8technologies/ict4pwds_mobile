@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:ict4pwds_mobile/constants/config.dart';
 import 'package:ict4pwds_mobile/constants/helpers.dart';
@@ -5,6 +7,45 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class User {
+  final int? id;
+  final String? firstName;
+  final String? lastName;
+  final String? email;
+  final bool? isActive;
+  final String? username;
+  final String? fullName;
+  final String? profilePic;
+  final String? phoneNumber;
+  final String? gender;
+
+  User({
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.isActive,
+    this.username,
+    this.fullName,
+    this.profilePic,
+    this.phoneNumber,
+    this.gender,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      email: json['email'],
+      isActive: json['is_active'],
+      username: json['username'],
+      fullName: json['full_name'],
+      profilePic: json['profile_pic'],
+      phoneNumber: json['phone_number'],
+      gender: json['gender'],
+    );
+  }
+
   static authUser(String username, String password) async {
     var data = {'username': username, 'password': password};
     var url = "${Config.apiBaseUrl}/accounts/login";
@@ -17,9 +58,10 @@ class User {
       return "success";
     } on DioError catch (e) {
       var error = e.response!.data['error'] ?? "Error Authenticating User";
-      if (error == "Error Authenticating User") return "Error Authenticating User";
+      if (error == "Error Authenticating User") {
+        return "Error Authenticating User";
+      }
       return error[0];
-
     }
   }
 
@@ -48,6 +90,50 @@ class User {
     }
   }
 
+  static upDateProfile(int id, String name, String phone) async {
+    var splitName = Helpers.getLastNameCommaFirstName(name);
+    var firstName = splitName[1];
+    var lastName = splitName[0];
+
+    var data = {
+      "first_name": firstName,
+      "last_name": lastName,
+      "phone_number": phone,
+      "gender": null
+    };
+
+    var url = "${Config.apiBaseUrl}/accounts/profiles/$id/";
+    try {
+      var token = await Config.getUserToken();
+      var dio = Dio();
+      dio.options.headers["Authorization"] = "Bearer $token";
+      await dio.patch(url, data: data);
+      return "success";
+    } on DioError catch (e) {
+      print(e);
+      return "Error updating account information";
+    }
+  }
+
+  static getUserProfile(int id) async {
+    var url = "${Config.apiBaseUrl}/accounts/profiles/$id/";
+    try {
+      var token = await Config.getUserToken();
+      var dio = Dio();
+      dio.options.headers["Authorization"] = "Bearer $token";
+      Response response = await dio.get(url);
+      final prefs = await SharedPreferences.getInstance();
+      Map jsonResponse = response.data;
+      bool result = await prefs.setString('user', jsonEncode(jsonResponse));
+      if (result) {
+        return true;
+      }
+      return false;
+    } on DioError {
+      return false;
+    }
+  }
+
   static getUserFromToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString("access") != null &&
@@ -57,6 +143,15 @@ class User {
       return user;
     }
     return null;
+  }
+
+  static Future getPrefUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('user') != null) {
+      String? userPref = prefs.getString('user');
+      Map user = jsonDecode(userPref!);
+      return user;
+    }
   }
 
   static deleteUserToken() async {

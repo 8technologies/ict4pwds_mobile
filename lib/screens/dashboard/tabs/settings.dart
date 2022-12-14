@@ -5,6 +5,7 @@ import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/models/user.dart';
 import 'package:ict4pwds_mobile/screens/auth/login.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/tabs/settings/additional.dart';
+import 'package:ict4pwds_mobile/screens/dashboard/tabs/settings/caregiver.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/tabs/settings/profile.dart';
 
 class Settings extends StatefulWidget {
@@ -16,16 +17,14 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   void getUser() async {
-    var user = await User.getUserFromToken();
+    var user = await User.getPrefUser();
     setState(() {
-      name = "${user['first_name']} ${user['last_name']}";
       if (user['profile_pic'] != null) {
         url = "${Config.baseUrl}${user['profile_pic']}";
       }
     });
   }
 
-  String name = "Hello ";
   String url = "default";
 
   bool loggingOut = false;
@@ -55,13 +54,13 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ArgonColors.white,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 15),
-        child: Column(
-          children: <Widget>[
-            Padding(
+      body: Column(
+        children: <Widget>[
+          Container(
+            color: ArgonColors.inputSuccess,
+            child: Padding(
               padding: const EdgeInsets.only(
-                  top: 20, left: 15, right: 15, bottom: 0),
+                  top: 35, left: 15, right: 15, bottom: 15),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,59 +68,77 @@ class _SettingsState extends State<Settings> {
                   SizedBox(
                     child: Text(
                       "Account settings",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   SizedBox(child: Icon(Icons.settings)),
                 ],
               ),
             ),
-            Expanded(
-                child: ListView(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
+          ),
+          Expanded(
+            child: ListView(
+              padding: MediaQuery.of(context).padding.copyWith(top: 2),
               children: <Widget>[
                 GFListTile(
-                    onTap: () {
-                      var route = MaterialPageRoute(
-                        builder: (context) => const Profile(),
-                      );
-                      Navigator.push(context, route);
-                    },
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 12),
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 0, vertical: 2),
-                    color: ArgonColors.bgColorScreen,
-                    avatar: url == 'default'
-                        ? const GFAvatar(
-                            backgroundImage:
-                                AssetImage('assets/img/profile.png'),
-                            size: GFSize.MEDIUM,
-                          )
-                        : GFAvatar(
-                            backgroundImage: NetworkImage(url),
-                            size: GFSize.MEDIUM,
-                          ),
-                    titleText: name,
-                    subTitleText:
-                        'Update you basic account information like email, phone etc',
-                    icon: const Icon(Icons.person_outline)),
+                  onTap: () {
+                    var route = MaterialPageRoute(
+                      builder: (context) => const Profile(),
+                    );
+                    Navigator.push(context, route);
+                  },
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 20.0, horizontal: 12),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 0, vertical: 2),
+                  color: ArgonColors.bgColorScreen,
+                  avatar: url == 'default'
+                      ? const GFAvatar(
+                          backgroundColor: ArgonColors.white,
+                          backgroundImage: AssetImage('assets/img/profile.png'),
+                          size: GFSize.MEDIUM,
+                        )
+                      : GFAvatar(
+                          backgroundColor: ArgonColors.white,
+                          backgroundImage: NetworkImage(url),
+                          size: GFSize.MEDIUM,
+                        ),
+                  titleText: "Account Information",
+                  subTitleText: 'Update your account information',
+                ),
                 GFListTile(
-                    onTap: () {
-                      var route = MaterialPageRoute(
-                        builder: (context) => const Additional(),
-                      );
-                      Navigator.push(context, route);
-                    },
-                    color: ArgonColors.bgColorScreen,
-                    margin: tileMarging,
-                    padding: tilePadding,
-                    titleText: 'Care taker information',
-                    subTitleText:
-                        'Add information about your Next of kin, care taker and other information',
-                    icon: const Icon(Icons.people_outline_outlined)),
+                  onTap: () {
+                    var route = MaterialPageRoute(
+                      builder: (context) => const Additional(),
+                    );
+                    Navigator.push(context, route);
+                  },
+                  color: ArgonColors.bgColorScreen,
+                  margin: tileMarging,
+                  padding: tilePadding,
+                  titleText: 'Personal Information',
+                  subTitleText:
+                      'Add your personal and bio data information here',
+                  icon: const Icon(Icons.person_outline),
+                ),
+                GFListTile(
+                  onTap: () {
+                    var route = MaterialPageRoute(
+                      builder: (context) => const CareGiver(),
+                    );
+                    Navigator.push(context, route);
+                  },
+                  color: ArgonColors.bgColorScreen,
+                  margin: tileMarging,
+                  padding: tilePadding,
+                  titleText: 'Caregiver information',
+                  subTitleText:
+                      'Add information about your Next of kin, care taker and other information',
+                  icon: const Icon(Icons.people_outline_outlined),
+                ),
                 GFListTile(
                     color: ArgonColors.bgColorScreen,
                     margin: tileMarging,
@@ -143,9 +160,9 @@ class _SettingsState extends State<Settings> {
                         ? const CircularProgressIndicator(strokeWidth: 1)
                         : const Icon(Icons.logout_outlined)),
               ],
-            )),
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }

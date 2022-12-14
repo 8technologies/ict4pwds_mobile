@@ -3,8 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:ict4pwds_mobile/constants/helpers.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
-import 'package:ict4pwds_mobile/models/opportunity.dart';
-import 'package:ict4pwds_mobile/screens/dashboard/pages/single/single_opportunity.dart';
+import 'package:ict4pwds_mobile/models/information_bank.dart';
 import 'package:ict4pwds_mobile/widgets/page_header.dart';
 import 'package:ict4pwds_mobile/widgets/styled_tile.dart';
 
@@ -16,12 +15,12 @@ class InformationBanks extends StatefulWidget {
 }
 
 class _InformationBanksState extends State<InformationBanks> {
-  Opportunity opportunity = Opportunity();
-  Future<List<Opportunity>>? futureData;
+  InformationBank informationBank = InformationBank();
+  Future<List<InformationBank>>? futureData;
 
   @override
   void initState() {
-    futureData = opportunity.fetchData();
+    futureData = informationBank.fetchData();
     super.initState();
   }
 
@@ -32,11 +31,11 @@ class _InformationBanksState extends State<InformationBanks> {
       body: Column(
         children: <Widget>[
           const PageHeader(title: 'Information Bank'),
-          FutureBuilder<List<Opportunity>>(
+          FutureBuilder<List<InformationBank>>(
             future: futureData,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                List<Opportunity>? data = snapshot.data;
+                List<InformationBank>? data = snapshot.data;
                 if (data!.isEmpty) {
                   return Column(
                     children: [
@@ -46,7 +45,8 @@ class _InformationBanksState extends State<InformationBanks> {
                         height: 100,
                       ),
                       const SizedBox(height: 15),
-                      const Text("No InformationBanks found, check again later"),
+                      const Text(
+                          "No InformationBanks found, check again later"),
                     ],
                   );
                 }
@@ -56,18 +56,10 @@ class _InformationBanksState extends State<InformationBanks> {
                     itemCount: data.length,
                     itemBuilder: (BuildContext context, int index) {
                       return StyledTile(
-                        onTap: () {
-                          Opportunity opportunity = data[index];
-                          var route = MaterialPageRoute(
-                            builder: (context) =>
-                                SingleOpportunity(opportunity: opportunity),
-                          );
-                          Navigator.push(context, route);
-                        },
-                        url: data[index].logo ?? "no_image",
-                        title: data[index].opportunityTitle ?? "No title",
-                        subtitle: data[index].nameOfProvider ??
-                            "Opportunity Offered By",
+                        onTap: () {},
+                        url: "no_image",
+                        title:  data[index].title!,
+                        subtitle: "Category: ${data[index].categoryName}"
                       );
                     },
                   ),

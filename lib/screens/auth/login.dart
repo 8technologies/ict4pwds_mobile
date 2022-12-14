@@ -95,19 +95,19 @@ class _LoginState extends State<Login> {
                       loginFunction();
                     },
                     style: TextButton.styleFrom(
-                        backgroundColor: ArgonColors.primary,
+                        backgroundColor: ArgonColors.mainGreen,
                         padding: const EdgeInsets.only(top: 15, bottom: 15)),
                     child: isLoading
                         ? const SizedBox(
                             height: 15,
                             width: 15,
                             child: CircularProgressIndicator(
-                              color: ArgonColors.white,
+                              color: ArgonColors.black,
                               strokeWidth: 1,
                             ))
                         : const Text(
                             "Login",
-                            style: TextStyle(color: ArgonColors.white),
+                            style: TextStyle(color: ArgonColors.black),
                           ),
                   ),
                 ),
@@ -146,8 +146,10 @@ class _LoginState extends State<Login> {
       isLoading = true;
     });
     if (_formKey.currentState!.validate()) {
-      var authed =
-          await User.authUser(emailController.text, passwordController.text);
+      var authed = await User.authUser(
+        emailController.text,
+        passwordController.text,
+      );
 
       if (authed != "success") {
         setState(() {

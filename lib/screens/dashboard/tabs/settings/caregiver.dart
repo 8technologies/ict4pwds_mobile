@@ -3,14 +3,14 @@ import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/widgets/input.dart';
 import 'package:ict4pwds_mobile/widgets/page_header.dart';
 
-class Additional extends StatefulWidget {
-  const Additional({Key? key}) : super(key: key);
+class CareGiver extends StatefulWidget {
+  const CareGiver({Key? key}) : super(key: key);
 
   @override
-  State<Additional> createState() => _AdditionalState();
+  State<CareGiver> createState() => _CareGiverState();
 }
 
-class _AdditionalState extends State<Additional> {
+class _CareGiverState extends State<CareGiver> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -19,7 +19,7 @@ class _AdditionalState extends State<Additional> {
       backgroundColor: ArgonColors.white,
       body: Column(
         children: <Widget>[
-          const PageHeader(title: 'Personal Information'),
+          const PageHeader(title: 'Caregiver Information'),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),

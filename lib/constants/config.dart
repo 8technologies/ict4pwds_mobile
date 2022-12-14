@@ -18,8 +18,10 @@ class Config {
         var refreshToken = prefs.getString("refresh");
         var url = "${Config.apiBaseUrl}/accounts/token/refresh/";
         try {
-          Response response =
-              await Dio().post(url, data: {'refresh': refreshToken});
+          Response response = await Dio().post(
+            url,
+            data: {'refresh': refreshToken},
+          );
           prefs.setString("access", response.data['access']);
         } on DioError catch (e) {
           // ignore: avoid_print
@@ -32,5 +34,22 @@ class Config {
 
     //Todo: if token is empty go to login screen
     return prefs.getString("access");
+  }
+
+  static Future refreshToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var refreshToken = prefs.getString("refresh");
+    var url = "${Config.apiBaseUrl}/accounts/token/refresh/";
+    try {
+      Response response = await Dio().post(
+        url,
+        data: {'refresh': refreshToken},
+      );
+      prefs.setString("access", response.data['access']);
+    } on DioError catch (e) {
+      // ignore: avoid_print
+      print(e);
+    }
+    return true;
   }
 }
