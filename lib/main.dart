@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ict4pwds_mobile/constants/navigation_service.dart';
 import 'package:ict4pwds_mobile/screens/auth/login.dart';
 import 'package:ict4pwds_mobile/screens/auth/register.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/home.dart';
@@ -23,14 +24,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'ICT FOR PWDs',
-        theme: ThemeData(primarySwatch: Colors.blue),
-        initialRoute: isLoggedin,
-        debugShowCheckedModeBanner: false,
-        routes: <String, WidgetBuilder>{
-          "/login": (BuildContext context) => const Login(),
-          "/register": (BuildContext context) => const Register(),
-          "/home": (BuildContext context) => const Home(),
-        });
+      title: 'ICT FOR PWDs',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      initialRoute: isLoggedin,
+      debugShowCheckedModeBanner: false,
+      routes: <String, WidgetBuilder>{
+        "/login": (BuildContext context) => const Login(),
+        "/register": (BuildContext context) => const Register(),
+        "/home": (BuildContext context) => const Home(),
+      },
+      navigatorKey: NavigationService().navigationKey,
+    );
   }
 }

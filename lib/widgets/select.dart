@@ -8,6 +8,7 @@ class Select extends StatelessWidget {
     this.onChanged,
     this.readOnly = false,
     this.validator,
+    this.clearOption = false,
     this.controller,
     this.searchEnabled = false,
     required this.dropDownList,
@@ -17,6 +18,7 @@ class Select extends StatelessWidget {
   final SingleValueDropDownController? controller;
   final bool readOnly;
   final bool searchEnabled;
+  final bool clearOption;
   final String? Function(String?)? validator;
   final List<DropDownValueModel> dropDownList;
 
@@ -24,7 +26,7 @@ class Select extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropDownTextField(
       controller: controller,
-      clearOption: true,
+      clearOption: clearOption,
       enableSearch: searchEnabled,
       clearIconProperty: IconProperty(color: ArgonColors.muted),
       searchDecoration: const InputDecoration(

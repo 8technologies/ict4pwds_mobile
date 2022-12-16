@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+import 'package:bootstrap_alert/bootstrap_alert.dart';
+import 'package:ict4pwds_mobile/constants/helpers.dart';
+import 'package:ict4pwds_mobile/models/user.dart';
 import 'package:intl/intl.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
@@ -17,35 +22,63 @@ class Additional extends StatefulWidget {
 class _AdditionalState extends State<Additional> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController dobController = TextEditingController();
-  //final SingleValueDropDownController _cnt = SingleValueDropDownController();
 
-  final List<DropDownValueModel> hasCareTakerList = const [
-    DropDownValueModel(name: 'Yes', value: true),
-    DropDownValueModel(name: 'No', value: false)
-  ];
+  // final SingleValueDropDownController regionController =
+  //     SingleValueDropDownController();
+  final SingleValueDropDownController districtController =
+      SingleValueDropDownController();
+  final SingleValueDropDownController disabilityController =
+      SingleValueDropDownController();
+  final SingleValueDropDownController employmentController =
+      SingleValueDropDownController();
+  final SingleValueDropDownController educationLevelController =
+      SingleValueDropDownController();
+
+  final DropDownValueModel noMatch = const DropDownValueModel(
+    name: 'Select item',
+    value: null,
+  );
 
   final List<DropDownValueModel> employmentStatusList = const [
     DropDownValueModel(name: 'Unemployed', value: 'Unemployed'),
     DropDownValueModel(name: 'Employed', value: 'Employed')
   ];
 
+  final EdgeInsets labelPadding = const EdgeInsets.only(top: 15, bottom: 5);
+
   int? id;
+  int? activeUser;
+  dynamic activeProfile;
+  //List<DropDownValueModel> regionList = const [];
   List<DropDownValueModel> educLevelList = const [];
+  List<DropDownValueModel> districtList = const [];
   List<DropDownValueModel> disabilitiesList = const [];
 
-  void getPwdProfile() async {
+  bool isLoading = false;
+  bool hasError = false;
+  bool distEnabled = false;
+  String errorMessage = "No error";
+
+  Future getPwdProfile() async {
     var pwd = await Pwd.getPrefProfile();
+    var user = await User.getUserFromToken();
     setState(() {
+      activeUser = user;
+      activeProfile = pwd;
       id = pwd['id'];
+      if (id != null) {
+        dobController.text = pwd['date_of_birth'];
+      }
     });
   }
 
   void getselectLists() async {
-    Pwd.getEduactionLevels().then(
+    await getPwdProfile();
+    var districts = Pwd.getDistrict().then(
       (value) => {
         setState(
           () => {
-            educLevelList = List<DropDownValueModel>.from(
+            districtList = List<DropDownValueModel>.from(
               value.map(
                 (item) => DropDownValueModel(
                   name: item['name'],
@@ -58,7 +91,41 @@ class _AdditionalState extends State<Additional> {
       },
     );
 
-    Pwd.getDisabilities().then(
+    // var region = Pwd.getRegions().then(
+    //   (value) => {
+    //     setState(
+    //       () => {
+    //         regionList = List<DropDownValueModel>.from(
+    //           value.map(
+    //             (item) => DropDownValueModel(
+    //               name: item['name'],
+    //               value: item['id'],
+    //             ),
+    //           ),
+    //         ),
+    //       },
+    //     )
+    //   },
+    // );
+
+    var educ = Pwd.getEduactionLevels().then(
+      (value) => {
+        setState(
+          () => {
+            educLevelList = List<DropDownValueModel>.from(
+              value.map(
+                (item) => DropDownValueModel(
+                    name: item['name'],
+                    value: item['id'],
+                    toolTipMsg: item['region'].toString()),
+              ),
+            ),
+          },
+        )
+      },
+    );
+
+    var dis = Pwd.getDisabilities().then(
       (value) => {
         setState(
           () => {
@@ -74,11 +141,54 @@ class _AdditionalState extends State<Additional> {
         )
       },
     );
+
+    DropDownValueModel empStatus = employmentStatusList.firstWhere(
+      (element) => element.value == activeProfile['employment_status'],
+      orElse: () => noMatch,
+    );
+    if (empStatus.value != null) {
+      employmentController.dropDownValue = empStatus;
+    }
+
+    await educ;
+    DropDownValueModel educStatus = educLevelList.firstWhere(
+      (element) => element.value == activeProfile['highest_level_of_education'],
+      orElse: () => noMatch,
+    );
+    if (educStatus.value != null) {
+      educationLevelController.dropDownValue = educStatus;
+    }
+
+    await dis;
+    DropDownValueModel disStatus = disabilitiesList.firstWhere(
+      (element) => element.value == activeProfile['type_of_disability'][0],
+      orElse: () => noMatch,
+    );
+    if (disStatus.value != null) {
+      disabilityController.dropDownValue = disStatus;
+    }
+
+    await districts;
+    DropDownValueModel districtStatus = districtList.firstWhere(
+      (element) => element.value == activeProfile['district'],
+      orElse: () => noMatch,
+    );
+    if (districtStatus.value != null) {
+      districtController.dropDownValue = districtStatus;
+    }
+
+    // await region;
+    // DropDownValueModel regionStatus = regionList.firstWhere(
+    //   (element) => element.value == activeProfile['region'],
+    //   orElse: () => noMatch,
+    // );
+    // if (regionStatus.value != null) {
+    //   regionController.dropDownValue = regionStatus;
+    // }
   }
 
   @override
   void initState() {
-    getPwdProfile();
     getselectLists();
     super.initState();
   }
@@ -105,14 +215,28 @@ class _AdditionalState extends State<Additional> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        const SizedBox(
-                          width: double.infinity,
-                          child: Text("Type of Disability"),
+                        SizedBox(
+                          child: BootstrapAlert(
+                            visible: hasError,
+                            text: errorMessage,
+                            isDismissible: true,
+                          ),
+                        ),
+                        Padding(
+                          padding: labelPadding,
+                          child: const SizedBox(
+                            width: double.infinity,
+                            child: Text("Type of Disability"),
+                          ),
                         ),
                         SizedBox(
                           width: double.infinity,
                           child: disabilitiesList.isNotEmpty
-                              ? Select(dropDownList: disabilitiesList)
+                              ? Select(
+                                  controller: disabilityController,
+                                  dropDownList: disabilitiesList,
+                                  validator: Helpers.validateText,
+                                )
                               : const Padding(
                                   padding: EdgeInsets.only(top: 10),
                                   child: LinearProgressIndicator(
@@ -120,9 +244,9 @@ class _AdditionalState extends State<Additional> {
                                   ),
                                 ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 15),
-                          child: SizedBox(
+                        Padding(
+                          padding: labelPadding,
+                          child: const SizedBox(
                             width: double.infinity,
                             child: Text("Date of bith"),
                           ),
@@ -139,43 +263,46 @@ class _AdditionalState extends State<Additional> {
                             },
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 15),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: Text("Region"),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: double.infinity,
-                          child: Input(
-                            placeholder: "Enter your region here",
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 15),
-                          child: SizedBox(
+                        // Padding(
+                        //   padding: labelPadding,
+                        //   child: const SizedBox(
+                        //     width: double.infinity,
+                        //     child: Text("Region"),
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   width: double.infinity,
+                        //   child: regionList.isNotEmpty
+                        //       ? Select(
+                        //           validator: Helpers.validateText,
+                        //           dropDownList: regionList,
+                        //           searchEnabled: true,
+                        //           controller: regionController,
+                        //         )
+                        //       : const Padding(
+                        //           padding: EdgeInsets.only(top: 10),
+                        //           child: LinearProgressIndicator(
+                        //             color: ArgonColors.muted,
+                        //           ),
+                        //         ),
+                        // ),
+                        Padding(
+                          padding: labelPadding,
+                          child: const SizedBox(
                             width: double.infinity,
                             child: Text("District"),
                           ),
                         ),
-                        const SizedBox(
-                          width: double.infinity,
-                          child: Input(
-                            placeholder: "Enter your district",
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 15),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: Text("Education Level"),
-                          ),
-                        ),
                         SizedBox(
                           width: double.infinity,
-                          child: educLevelList.isNotEmpty
-                              ? Select(dropDownList: educLevelList)
+                          child: districtList.isNotEmpty
+                              ? Select(
+                                  searchEnabled: true,
+                                  validator: Helpers.validateText,
+                                  readOnly: false,
+                                  dropDownList: districtList,
+                                  controller: districtController,
+                                )
                               : const Padding(
                                   padding: EdgeInsets.only(top: 10),
                                   child: LinearProgressIndicator(
@@ -183,44 +310,71 @@ class _AdditionalState extends State<Additional> {
                                   ),
                                 ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 15),
-                          child: SizedBox(
+                        Padding(
+                          padding: labelPadding,
+                          child: const SizedBox(
+                            width: double.infinity,
+                            child: Text("Education Level"),
+                          ),
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: educLevelList.isNotEmpty
+                              ? Select(
+                                  dropDownList: educLevelList,
+                                  controller: educationLevelController,
+                                )
+                              : const Padding(
+                                  padding: EdgeInsets.only(top: 10),
+                                  child: LinearProgressIndicator(
+                                    color: ArgonColors.muted,
+                                  ),
+                                ),
+                        ),
+                        Padding(
+                          padding: labelPadding,
+                          child: const SizedBox(
                             width: double.infinity,
                             child: Text("Emplyoment status"),
                           ),
                         ),
                         SizedBox(
                           width: double.infinity,
-                          child: Select(dropDownList: employmentStatusList),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 15),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: Text("Do you have a caregiver"),
+                          child: Select(
+                            controller: employmentController,
+                            dropDownList: employmentStatusList,
+                            validator: Helpers.validateText,
                           ),
                         ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: Select(dropDownList: hasCareTakerList),
-                        ),
                         Padding(
-                            padding: const EdgeInsets.only(top: 25),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: TextButton(
-                                onPressed: () {},
-                                style: TextButton.styleFrom(
-                                    backgroundColor: ArgonColors.primary,
-                                    padding: const EdgeInsets.only(
-                                        top: 15, bottom: 15)),
-                                child: const Text(
-                                  "Update Information",
-                                  style: TextStyle(color: ArgonColors.white),
-                                ),
-                              ),
-                            )),
+                          padding: const EdgeInsets.only(top: 25),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: TextButton(
+                              onPressed: () {
+                                submitProfile();
+                              },
+                              style: TextButton.styleFrom(
+                                  backgroundColor: ArgonColors.mainGreen,
+                                  padding: const EdgeInsets.only(
+                                      top: 15, bottom: 15)),
+                              child: isLoading
+                                  ? const SizedBox(
+                                      height: 15,
+                                      width: 15,
+                                      child: CircularProgressIndicator(
+                                        color: ArgonColors.black,
+                                        strokeWidth: 1,
+                                      ),
+                                    )
+                                  : const Text(
+                                      "Update Information",
+                                      style:
+                                          TextStyle(color: ArgonColors.black),
+                                    ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -233,9 +387,65 @@ class _AdditionalState extends State<Additional> {
     );
   }
 
-  updateProfile() async {}
+  submitProfile() async {
+    //FocusManager.instance.primaryFocus?.unfocus();
+    setState(() {
+      hasError = false;
+      isLoading = true;
+    });
 
-  createProfile() async {}
+    if (_formKey.currentState!.validate()) {
+      Map data = {
+        "user": activeUser!,
+        "type_of_disability": [disabilityController.dropDownValue?.value],
+        "employment_status": employmentController.dropDownValue?.value,
+        "district": districtController.dropDownValue?.value,
+        "district_name": districtController.dropDownValue?.name,
+      };
+
+      if (dobController.text.isNotEmpty) {
+        data["date_of_birth"] = dobController.text;
+      }
+
+      if (educationLevelController.dropDownValue?.value != null) {
+        data["highest_level_of_education"] =
+            educationLevelController.dropDownValue?.value;
+      }
+
+      dynamic profile;
+      var payload = jsonEncode(data);
+      if (id == null) {
+        profile = await Pwd.createProfile(payload);
+        errorMessage = "You profile has been created";
+      } else {
+        profile = await Pwd.upDateProfile(payload, id!);
+        errorMessage = "Profile information updated";
+      }
+
+      if (profile != "success") {
+        setState(() {
+          hasError = true;
+          isLoading = false;
+          errorMessage = profile;
+        });
+        return;
+      }
+
+      var newProfile = await Pwd.getProfile(activeUser!);
+      if (newProfile) {
+        var pwd = await Pwd.getPrefProfile();
+        setState(() {
+          id = pwd['id'];
+          hasError = true;
+          errorMessage = errorMessage;
+        });
+      }
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   selectDate() async {
     DateTime? pickedDate = await showDatePicker(

@@ -4,7 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:ict4pwds_mobile/constants/config.dart';
 import 'package:ict4pwds_mobile/constants/helpers.dart';
+import 'package:ict4pwds_mobile/constants/navigation_service.dart';
 import 'package:ict4pwds_mobile/models/user.dart';
+import 'package:ict4pwds_mobile/screens/auth/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Pwd {
@@ -71,54 +73,23 @@ class Pwd {
     }
   }
 
-  static createProfile(String name, String email, String password) async {
-    var splitName = Helpers.getLastNameCommaFirstName(name);
-    var firstName = splitName[1];
-    var lastName = splitName[0];
-
-    var data = {
-      "username": email,
-      "first_name": firstName,
-      "last_name": lastName,
-      "email": email,
-      "password": password,
-      "profile": {"gender": null}
-    };
-
-    var url = "${Config.apiBaseUrl}/accounts/register/";
-    try {
-      await Dio().post(url, data: data);
-      return "success";
-    } on DioError catch (e) {
-      var message = e.response!.data['username'] ?? "Error creating Account";
-      if (message == "Error creating Account") return "Error creating Account";
-      return "Account already registered";
+  static createProfile(String payload) async {
+    var url = "${Config.apiBaseUrl}/persons_with_disabilities/persons/";
+    var response = await Config.apiPostCall(url, payload);
+    if (response['error']) {
+      return "Error creating profile";
     }
+    return "success";
   }
 
-  static upDateProfile(int id, String name, String phone) async {
-    var splitName = Helpers.getLastNameCommaFirstName(name);
-    var firstName = splitName[1];
-    var lastName = splitName[0];
-
-    var data = {
-      "first_name": firstName,
-      "last_name": lastName,
-      "phone_number": phone,
-      "gender": null
-    };
-
-    var url = "${Config.apiBaseUrl}/accounts/profiles/$id/";
-    try {
-      var token = await Config.getUserToken();
-      var dio = Dio();
-      dio.options.headers["Authorization"] = "Bearer $token";
-      await dio.patch(url, data: data);
-      return "success";
-    } on DioError catch (e) {
-      print(e);
-      return "Error updating account information";
+  static upDateProfile(String payload, int id) async {
+    var url = "${Config.apiBaseUrl}/persons_with_disabilities/persons/$id/";
+    var response = await Config.apiPutCall(url, payload);
+    if (response['error']) {
+      print(response['data']);
+      return "Error creating profile";
     }
+    return "success";
   }
 
   static Future getPrefProfile() async {
@@ -136,6 +107,10 @@ class Pwd {
       Map profile = jsonDecode(userPref!);
       return profile;
     }
+
+    Pwd.deletePwdToken();
+    User.deleteUserToken();
+    NavigationService().popToFirst(const Login());
   }
 
   static deletePwdToken() async {
@@ -147,13 +122,41 @@ class Pwd {
 
   static Future getEduactionLevels() async {
     var url = "${Config.apiBaseUrl}/education_levels/";
-    List<dynamic> jsonResponse = await Config.apiGetCall(url);
-    return jsonResponse;
+    var response = await Config.apiGetCall(url);
+    if (response['error']) {
+      return [];
+    }
+    List<dynamic> jsonresp = response["data"];
+    return jsonresp;
   }
 
   static Future getDisabilities() async {
     var url = "${Config.apiBaseUrl}/disability/";
-    List<dynamic> jsonResponse = await Config.apiGetCall(url);
-    return jsonResponse;
+    var response = await Config.apiGetCall(url);
+    if (response['error']) {
+      return [];
+    }
+    List<dynamic> jsonresp = response["data"];
+    return jsonresp;
+  }
+
+  static Future getRegions() async {
+    var url = "${Config.apiBaseUrl}/common/regions/";
+    var response = await Config.apiGetCall(url);
+    if (response['error']) {
+      return [];
+    }
+    List<dynamic> jsonresp = response["data"];
+    return jsonresp;
+  }
+
+  static Future getDistrict() async {
+    var url = "${Config.apiBaseUrl}/districts/";
+    var response = await Config.apiGetCall(url);
+    if (response['error']) {
+      return [];
+    }
+    List<dynamic> jsonresp = response["data"];
+    return jsonresp;
   }
 }

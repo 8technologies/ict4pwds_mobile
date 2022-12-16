@@ -1,7 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
+import 'package:ict4pwds_mobile/models/pwd.dart';
+import 'package:ict4pwds_mobile/models/user.dart';
+import 'package:ict4pwds_mobile/screens/auth/login.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'navigation_service.dart';
 
 class Config {
   static const String baseUrl =
@@ -33,8 +38,9 @@ class Config {
       return prefs.getString("access");
     }
 
-    //Todo: if token is empty go to login screen
-    return prefs.getString("access");
+    Pwd.deletePwdToken();
+    User.deleteUserToken();
+    NavigationService().popToFirst(const Login());
   }
 
   static Future refreshToken() async {
@@ -68,10 +74,45 @@ class Config {
           forceRefresh: force,
         ),
       );
-      return response.data;
-    } on DioError {
-      dynamic returnedData = [];
-      return returnedData;
+      return {'error': false, 'data': response.data};
+    } on DioError catch (e) {
+      return {'error': true, 'data': e.response};
+    }
+  }
+
+  static Future apiPostCall(String url, String payload) async {
+    try {
+      var token = await Config.getUserToken();
+      var dio = Dio();
+      dio.options.headers["Authorization"] = "Bearer $token";
+      Response response = await dio.post(url, data: payload);
+      return {'error': false, 'data': response.data};
+    } on DioError catch (e) {
+      return {'error': true, 'data': e.response};
+    }
+  }
+
+  static apiPatchCall(String url, String payload) async {
+    try {
+      var token = await Config.getUserToken();
+      var dio = Dio();
+      dio.options.headers["Authorization"] = "Bearer $token";
+      Response response = await dio.patch(url, data: payload);
+      return {'error': false, 'data': response.data};
+    } on DioError catch (e) {
+      return {'error': true, 'data': e.response};
+    }
+  }
+
+  static apiPutCall(String url, String payload) async {
+    try {
+      var token = await Config.getUserToken();
+      var dio = Dio();
+      dio.options.headers["Authorization"] = "Bearer $token";
+      Response response = await dio.put(url, data: payload);
+      return {'error': false, 'data': response.data};
+    } on DioError catch (e) {
+      return {'error': true, 'data': e.response};
     }
   }
 }
