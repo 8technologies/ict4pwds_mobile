@@ -1,7 +1,11 @@
+import 'package:intl/intl.dart';
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
+import 'package:ict4pwds_mobile/models/pwd.dart';
 import 'package:ict4pwds_mobile/widgets/input.dart';
 import 'package:ict4pwds_mobile/widgets/page_header.dart';
+import 'package:ict4pwds_mobile/widgets/select.dart';
 
 class Additional extends StatefulWidget {
   const Additional({Key? key}) : super(key: key);
@@ -12,6 +16,77 @@ class Additional extends StatefulWidget {
 
 class _AdditionalState extends State<Additional> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController dobController = TextEditingController();
+  //final SingleValueDropDownController _cnt = SingleValueDropDownController();
+
+  final List<DropDownValueModel> hasCareTakerList = const [
+    DropDownValueModel(name: 'Yes', value: true),
+    DropDownValueModel(name: 'No', value: false)
+  ];
+
+  final List<DropDownValueModel> employmentStatusList = const [
+    DropDownValueModel(name: 'Unemployed', value: 'Unemployed'),
+    DropDownValueModel(name: 'Employed', value: 'Employed')
+  ];
+
+  int? id;
+  List<DropDownValueModel> educLevelList = const [];
+  List<DropDownValueModel> disabilitiesList = const [];
+
+  void getPwdProfile() async {
+    var pwd = await Pwd.getPrefProfile();
+    setState(() {
+      id = pwd['id'];
+    });
+  }
+
+  void getselectLists() async {
+    Pwd.getEduactionLevels().then(
+      (value) => {
+        setState(
+          () => {
+            educLevelList = List<DropDownValueModel>.from(
+              value.map(
+                (item) => DropDownValueModel(
+                  name: item['name'],
+                  value: item['id'],
+                ),
+              ),
+            ),
+          },
+        )
+      },
+    );
+
+    Pwd.getDisabilities().then(
+      (value) => {
+        setState(
+          () => {
+            disabilitiesList = List<DropDownValueModel>.from(
+              value.map(
+                (item) => DropDownValueModel(
+                  name: item['name'],
+                  value: item['id'],
+                ),
+              ),
+            ),
+          },
+        )
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    getPwdProfile();
+    getselectLists();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +97,7 @@ class _AdditionalState extends State<Additional> {
           const PageHeader(title: 'Personal Information'),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 25),
               child: ListView(
                 children: <Widget>[
                   Form(
@@ -32,68 +107,106 @@ class _AdditionalState extends State<Additional> {
                       children: <Widget>[
                         const SizedBox(
                           width: double.infinity,
-                          child: Text("Next of Kin"),
+                          child: Text("Type of Disability"),
                         ),
-                        const SizedBox(
+                        SizedBox(
+                          width: double.infinity,
+                          child: disabilitiesList.isNotEmpty
+                              ? Select(dropDownList: disabilitiesList)
+                              : const Padding(
+                                  padding: EdgeInsets.only(top: 10),
+                                  child: LinearProgressIndicator(
+                                    color: ArgonColors.muted,
+                                  ),
+                                ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 15),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Text("Date of bith"),
+                          ),
+                        ),
+                        SizedBox(
                           width: double.infinity,
                           child: Input(
-                            placeholder: "Next Of Kin",
+                            readOnly: true,
+                            prefixIcon: const Icon(Icons.calendar_today),
+                            placeholder: "1990-01-30",
+                            controller: dobController,
+                            onTap: () {
+                              selectDate();
+                            },
                           ),
                         ),
                         const Padding(
                           padding: EdgeInsets.only(top: 15),
                           child: SizedBox(
                             width: double.infinity,
-                            child: Text("Next of Kin Relationship"),
+                            child: Text("Region"),
                           ),
                         ),
                         const SizedBox(
                           width: double.infinity,
                           child: Input(
-                            placeholder: "Next of Kin Relationship",
+                            placeholder: "Enter your region here",
                           ),
                         ),
                         const Padding(
                           padding: EdgeInsets.only(top: 15),
                           child: SizedBox(
                             width: double.infinity,
-                            child: Text("Next of Kin Number"),
+                            child: Text("District"),
                           ),
                         ),
                         const SizedBox(
                           width: double.infinity,
                           child: Input(
-                            placeholder: "Next of Kin Number",
+                            placeholder: "Enter your district",
                           ),
                         ),
                         const Padding(
                           padding: EdgeInsets.only(top: 15),
                           child: SizedBox(
                             width: double.infinity,
-                            child: Text("Name of care taker"),
+                            child: Text("Education Level"),
                           ),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: double.infinity,
-                          child: Input(
-                            placeholder: "Name of care taker",
-                          ),
+                          child: educLevelList.isNotEmpty
+                              ? Select(dropDownList: educLevelList)
+                              : const Padding(
+                                  padding: EdgeInsets.only(top: 10),
+                                  child: LinearProgressIndicator(
+                                    color: ArgonColors.muted,
+                                  ),
+                                ),
                         ),
                         const Padding(
                           padding: EdgeInsets.only(top: 15),
                           child: SizedBox(
                             width: double.infinity,
-                            child: Text("Care taker phone number"),
+                            child: Text("Emplyoment status"),
                           ),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: double.infinity,
-                          child: Input(
-                            placeholder: "Care taker phone number",
+                          child: Select(dropDownList: employmentStatusList),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 15),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Text("Do you have a caregiver"),
                           ),
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: Select(dropDownList: hasCareTakerList),
                         ),
                         Padding(
-                            padding: const EdgeInsets.only(top: 15),
+                            padding: const EdgeInsets.only(top: 25),
                             child: SizedBox(
                               width: double.infinity,
                               child: TextButton(
@@ -118,5 +231,25 @@ class _AdditionalState extends State<Additional> {
         ],
       ),
     );
+  }
+
+  updateProfile() async {}
+
+  createProfile() async {}
+
+  selectDate() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+      setState(() {
+        dobController.text = formattedDate;
+      });
+    }
   }
 }

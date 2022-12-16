@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -51,5 +52,26 @@ class Config {
       print(e);
     }
     return true;
+  }
+
+  static Future apiGetCall(String url, {bool force = false}) async {
+    try {
+      var token = await Config.getUserToken();
+      var dio = Dio();
+      dio.options.headers["Authorization"] = "Bearer $token";
+      dio.interceptors.add(DioCacheManager(CacheConfig()).interceptor);
+      Response response = await dio.get(
+        url,
+        options: buildCacheOptions(
+          const Duration(days: 10),
+          maxStale: const Duration(days: 14),
+          forceRefresh: force,
+        ),
+      );
+      return response.data;
+    } on DioError {
+      dynamic returnedData = [];
+      return returnedData;
+    }
   }
 }

@@ -40,4 +40,9 @@ class Helpers {
 
     return null;
   }
+
+  static String? validateText(String? value) {
+    if (value == null || value.isEmpty) return "This feild is required";
+    return null;
+  }
 }

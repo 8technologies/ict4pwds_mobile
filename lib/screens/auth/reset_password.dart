@@ -3,19 +3,17 @@ import 'package:ict4pwds_mobile/constants/helpers.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/models/user.dart';
 import 'package:ict4pwds_mobile/screens/auth/confirm_reset.dart';
-import 'package:ict4pwds_mobile/screens/auth/reset_password.dart';
-import 'package:ict4pwds_mobile/screens/dashboard/home.dart';
 import 'package:bootstrap_alert/bootstrap_alert.dart';
 import 'package:ict4pwds_mobile/widgets/input.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+class ResetPassword extends StatefulWidget {
+  const ResetPassword({Key? key}) : super(key: key);
 
   @override
-  State<Login> createState() => _LoginState();
+  State<ResetPassword> createState() => _ResetPasswordState();
 }
 
-class _LoginState extends State<Login> {
+class _ResetPasswordState extends State<ResetPassword> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -51,7 +49,7 @@ class _LoginState extends State<Login> {
                 const SizedBox(
                     width: double.infinity,
                     child: Text(
-                      "Sign In",
+                      "Reset Password",
                       style: TextStyle(
                           fontSize: 22.0, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.left,
@@ -60,11 +58,17 @@ class _LoginState extends State<Login> {
                   height: 15.0,
                 ),
                 SizedBox(
-                    child: BootstrapAlert(
-                  visible: authPassed,
-                  text: errorMessage,
-                  status: AlertStatus.danger,
-                )),
+                  child: BootstrapAlert(
+                    visible: authPassed,
+                    text: errorMessage,
+                    status: AlertStatus.danger,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: Text(
+                      "Enter your email address to get a password reset code"),
+                ),
                 SizedBox(
                   width: double.infinity,
                   child: Input(
@@ -77,16 +81,6 @@ class _LoginState extends State<Login> {
                 const SizedBox(
                   height: 10.0,
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  child: Input(
-                    placeholder: "Password",
-                    isPassword: true,
-                    prefixIcon: const Icon(Icons.lock),
-                    controller: passwordController,
-                    validator: Helpers.validatePassword,
-                  ),
-                ),
                 const SizedBox(
                   height: 10.0,
                 ),
@@ -94,7 +88,7 @@ class _LoginState extends State<Login> {
                   width: double.infinity,
                   child: TextButton(
                     onPressed: () {
-                      loginFunction();
+                      resetPasswordFunction();
                     },
                     style: TextButton.styleFrom(
                         backgroundColor: ArgonColors.mainGreen,
@@ -109,7 +103,7 @@ class _LoginState extends State<Login> {
                             ),
                           )
                         : const Text(
-                            "Login",
+                            "Continue",
                             style: TextStyle(color: ArgonColors.black),
                           ),
                   ),
@@ -123,23 +117,11 @@ class _LoginState extends State<Login> {
                     children: <Widget>[
                       TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, "/register");
+                          Navigator.of(context).pop();
                         },
                         child: const Text(
-                          'Create Account',
+                          'Back to Login',
                           textAlign: TextAlign.left,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          var router = MaterialPageRoute(
-                            builder: (context) => const ResetPassword(),
-                          );
-                          Navigator.push(context, router);
-                        },
-                        child: const Text(
-                          'Reset Password',
-                          textAlign: TextAlign.right,
                         ),
                       )
                     ],
@@ -151,15 +133,14 @@ class _LoginState extends State<Login> {
         ));
   }
 
-  loginFunction() async {
+  resetPasswordFunction() async {
     setState(() {
       authPassed = false;
       isLoading = true;
     });
     if (_formKey.currentState!.validate()) {
-      var authed = await User.authUser(
+      var authed = await User.resetPassword(
         emailController.text,
-        passwordController.text,
       );
 
       if (authed != "success") {
@@ -172,8 +153,10 @@ class _LoginState extends State<Login> {
       }
 
       Future(() {
-        var router = MaterialPageRoute(builder: (context) => const Home());
-        Navigator.pushAndRemoveUntil(context, router, (route) => false);
+        var router = MaterialPageRoute(
+          builder: (context) => const ConfirmReset(),
+        );
+        Navigator.pushReplacement(context, router);
       });
     }
     setState(() {

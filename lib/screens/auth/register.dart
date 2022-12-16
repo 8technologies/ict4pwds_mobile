@@ -26,127 +26,130 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Row(
-              children: const <Widget>[
-                SizedBox(
-                  child: Image(
-                    image: AssetImage('assets/img/logo2.png'),
-                    height: 90,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            const SizedBox(
-                width: double.infinity,
-                child: Text(
-                  "Create Account",
-                  style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                )),
-            const SizedBox(
-              height: 15.0,
-            ),
-            SizedBox(
-              child: BootstrapAlert(
-                visible: hasError,
-                text: errorMessage,
-                status: AlertStatus.danger,
-              ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: Input(
-                  prefixIcon: const Icon(Icons.person),
-                  placeholder: "Full Name",
-                  controller: nameController,
-                  validator: Helpers.validateFullName),
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: Input(
-                prefixIcon: const Icon(Icons.email),
-                placeholder: "Email Address",
-                controller: emailController,
-                validator: Helpers.validateEmail,
-              ),
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: Input(
-                  prefixIcon: const Icon(Icons.lock),
-                  placeholder: "Password",
-                  controller: passwordController,
-                  validator: Helpers.validatePassword),
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: TextButton(
-                onPressed: () {
-                  registerFunction();
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: ArgonColors.mainGreen,
-                  padding: const EdgeInsets.only(top: 15, bottom: 15),
-                ),
-                child: isLoading
-                    ? const SizedBox(
-                        height: 15,
-                        width: 15,
-                        child: CircularProgressIndicator(
-                          color: ArgonColors.black,
-                          strokeWidth: 1,
-                        ),
-                      )
-                    : const Text(
-                        "Create Account",
-                        style: TextStyle(color: ArgonColors.black),
-                      ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text(
-                      'Login Here',
-                      textAlign: TextAlign.left,
+      backgroundColor: ArgonColors.white,
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                children: const <Widget>[
+                  SizedBox(
+                    child: Image(
+                      image: AssetImage('assets/img/logo2.png'),
+                      height: 90,
                     ),
-                  )
+                  ),
                 ],
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 20.0,
+              ),
+              const SizedBox(
+                  width: double.infinity,
+                  child: Text(
+                    "Create Account",
+                    style:
+                        TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.left,
+                  )),
+              const SizedBox(
+                height: 15.0,
+              ),
+              SizedBox(
+                child: BootstrapAlert(
+                  visible: hasError,
+                  text: errorMessage,
+                  status: AlertStatus.danger,
+                ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: Input(
+                    prefixIcon: const Icon(Icons.person),
+                    placeholder: "Full Name",
+                    controller: nameController,
+                    validator: Helpers.validateFullName),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: Input(
+                  prefixIcon: const Icon(Icons.email),
+                  placeholder: "Email Address",
+                  controller: emailController,
+                  validator: Helpers.validateEmail,
+                ),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: Input(
+                    prefixIcon: const Icon(Icons.lock),
+                    placeholder: "Password",
+                    controller: passwordController,
+                    validator: Helpers.validatePassword),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: TextButton(
+                  onPressed: () {
+                    registerFunction();
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: ArgonColors.mainGreen,
+                    padding: const EdgeInsets.only(top: 15, bottom: 15),
+                  ),
+                  child: isLoading
+                      ? const SizedBox(
+                          height: 15,
+                          width: 15,
+                          child: CircularProgressIndicator(
+                            color: ArgonColors.black,
+                            strokeWidth: 1,
+                          ),
+                        )
+                      : const Text(
+                          "Create Account",
+                          style: TextStyle(color: ArgonColors.black),
+                        ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text(
+                        'Login Here',
+                        textAlign: TextAlign.left,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 
   registerFunction() async {

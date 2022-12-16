@@ -140,7 +140,7 @@ class User {
         prefs.getString("refresh") != null) {
       var token = prefs.getString("access");
       var user = JwtDecoder.decode(token!);
-      return user;
+      return user['id'];
     }
     return null;
   }
@@ -148,6 +148,14 @@ class User {
   static Future getPrefUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString('user') != null) {
+      String? userPref = prefs.getString('user');
+      Map user = jsonDecode(userPref!);
+      return user;
+    }
+
+    var id = await User.getUserFromToken();
+    var user = await User.getUserProfile(id);
+    if (user) {
       String? userPref = prefs.getString('user');
       Map user = jsonDecode(userPref!);
       return user;
@@ -160,6 +168,37 @@ class User {
         prefs.getString("refresh") != null) {
       prefs.remove("access");
       prefs.remove("refresh");
+    }
+  }
+
+  static resetPassword(String email) async {
+    var data = {
+      "email": email,
+    };
+
+    var url = "${Config.apiBaseUrl}/accounts/password_reset/";
+    try {
+      await Dio().post(url, data: data);
+      return "success";
+    } on DioError catch (e) {
+      //print(e);
+      return "Error requesting password reset";
+    }
+  }
+
+  static confirmPWReset(String password, String token) async {
+    var data = {
+      "password": password,
+      "token": token
+    };
+
+    var url = "${Config.apiBaseUrl}/accounts/password_reset/confirm/";
+    try {
+      await Dio().post(url, data: data);
+      return "success";
+    } on DioError catch (e) {
+      //print(e);
+      return "Error resetting password";
     }
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:ict4pwds_mobile/constants/config.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
+import 'package:ict4pwds_mobile/models/pwd.dart';
 import 'package:ict4pwds_mobile/models/user.dart';
 import 'package:ict4pwds_mobile/screens/auth/login.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/tabs/settings/additional.dart';
@@ -28,10 +29,14 @@ class _SettingsState extends State<Settings> {
   String url = "default";
 
   bool loggingOut = false;
-  EdgeInsets tilePadding =
-      const EdgeInsets.symmetric(vertical: 20.0, horizontal: 12);
-  EdgeInsets tileMarging =
-      const EdgeInsets.symmetric(horizontal: 0, vertical: 2);
+  EdgeInsets tilePadding = const EdgeInsets.symmetric(
+    vertical: 20.0,
+    horizontal: 12,
+  );
+  EdgeInsets tileMarging = const EdgeInsets.symmetric(
+    horizontal: 0,
+    vertical: 2,
+  );
 
   @override
   void initState() {
@@ -44,6 +49,7 @@ class _SettingsState extends State<Settings> {
       loggingOut = true;
     });
     await User.deleteUserToken();
+    await Pwd.deletePwdToken();
     Future(() {
       var router = MaterialPageRoute(builder: (context) => const Login());
       Navigator.pushAndRemoveUntil(context, router, (route) => false);

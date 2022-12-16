@@ -64,6 +64,11 @@ class _ProfileState extends State<Profile> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ArgonColors.white,
@@ -242,15 +247,18 @@ class _ProfileState extends State<Profile> {
         });
         return;
       }
+
+      var user = await User.getUserProfile(id!);
+      if (user) {
+        setState(() {
+          hasError = true;
+          errorMessage = "Information updated";
+        });
+      }
     }
 
-    var user = await User.getUserProfile(id!);
-    if (user) {
-      setState(() {
-        hasError = true;
-        isLoading = false;
-        errorMessage = "Information updated";
-      });
-    }
+    setState(() {
+      isLoading = false;
+    });
   }
 }
