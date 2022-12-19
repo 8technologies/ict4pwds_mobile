@@ -7,6 +7,7 @@ import 'package:ict4pwds_mobile/constants/helpers.dart';
 import 'package:ict4pwds_mobile/constants/navigation_service.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/models/pwd.dart';
+import 'package:ict4pwds_mobile/models/user.dart';
 import 'package:ict4pwds_mobile/screens/dashboard/tabs/settings/additional.dart';
 import 'package:ict4pwds_mobile/widgets/input.dart';
 import 'package:ict4pwds_mobile/widgets/page_header.dart';
@@ -43,8 +44,8 @@ class _CareGiverState extends State<CareGiver> {
   ];
 
   final List<DropDownValueModel> genderList = const [
-    DropDownValueModel(name: 'Yes', value: true),
-    DropDownValueModel(name: 'No', value: false)
+    DropDownValueModel(name: 'Male', value: "Male"),
+    DropDownValueModel(name: 'Female', value: "Female")
   ];
 
   final EdgeInsets labelPadding = const EdgeInsets.only(top: 15, bottom: 5);
@@ -62,6 +63,9 @@ class _CareGiverState extends State<CareGiver> {
     setState(() {
       activeProfile = pwd;
       id = pwd['id'];
+      if(activeProfile['has_care_giver']){
+        hasCaregiver = true;
+      }
       if (id == null) {
         NavigationService().replaceScreen(const Additional());
       }
@@ -109,7 +113,7 @@ class _CareGiverState extends State<CareGiver> {
           const PageHeader(title: 'Caregiver Information'),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
               child: ListView(
                 children: <Widget>[
                   Form(
@@ -137,6 +141,7 @@ class _CareGiverState extends State<CareGiver> {
                             clearOption: false,
                             onChanged: (value) {
                               setState(() {
+                                hasError = false;
                                 hasCaregiver = value.value;
                               });
                             },
@@ -239,9 +244,12 @@ class _CareGiverState extends State<CareGiver> {
                                 submitProfile();
                               },
                               style: TextButton.styleFrom(
-                                  backgroundColor: ArgonColors.mainGreen,
-                                  padding: const EdgeInsets.only(
-                                      top: 15, bottom: 15)),
+                                backgroundColor: ArgonColors.mainGreen,
+                                padding: const EdgeInsets.only(
+                                  top: 15,
+                                  bottom: 15,
+                                ),
+                              ),
                               child: isLoading
                                   ? const SizedBox(
                                       height: 15,
@@ -253,8 +261,9 @@ class _CareGiverState extends State<CareGiver> {
                                     )
                                   : const Text(
                                       "Update Information",
-                                      style:
-                                          TextStyle(color: ArgonColors.black),
+                                      style: TextStyle(
+                                        color: ArgonColors.black,
+                                      ),
                                     ),
                             ),
                           ),
@@ -280,9 +289,7 @@ class _CareGiverState extends State<CareGiver> {
 
     if (_formKey.currentState!.validate()) {
       Map data = {
-        "type_of_disability": [activeProfile['type_of_disability'][0]],
         "has_care_giver": hasCaregiverController.dropDownValue?.value,
-        "employment_status": activeProfile['employment_status']
       };
 
       if (hasCaregiver) {
@@ -308,9 +315,8 @@ class _CareGiverState extends State<CareGiver> {
       }
 
       var payload = jsonEncode(data);
-
+      print(payload);
       var profile = await Pwd.upDateProfile(payload, id!);
-      errorMessage = "Profile information updated";
 
       if (profile != "success") {
         setState(() {
@@ -321,13 +327,14 @@ class _CareGiverState extends State<CareGiver> {
         return;
       }
 
-      var newProfile = await Pwd.getProfile(activeProfile['user']);
+      int user = await User.getUserFromToken();
+      var newProfile = await Pwd.getProfile(user);
       if (newProfile) {
         var pwd = await Pwd.getPrefProfile();
         setState(() {
           id = pwd['id'];
           hasError = true;
-          errorMessage = errorMessage;
+          errorMessage = "Info has been updated";
         });
       }
     }

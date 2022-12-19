@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:ict4pwds_mobile/constants/config.dart';
-import 'package:ict4pwds_mobile/constants/helpers.dart';
 import 'package:ict4pwds_mobile/constants/navigation_service.dart';
 import 'package:ict4pwds_mobile/models/user.dart';
 import 'package:ict4pwds_mobile/screens/auth/login.dart';
@@ -62,8 +60,10 @@ class Pwd {
       if (jsonResponse.isEmpty) {
         jsonResponse.add({"id": null});
       }
-      bool result =
-          await prefs.setString('pwd_profile', jsonEncode(jsonResponse.first));
+      bool result = await prefs.setString(
+        'pwd_profile',
+        jsonEncode(jsonResponse.first),
+      );
       if (result) {
         return true;
       }
@@ -84,9 +84,8 @@ class Pwd {
 
   static upDateProfile(String payload, int id) async {
     var url = "${Config.apiBaseUrl}/persons_with_disabilities/persons/$id/";
-    var response = await Config.apiPutCall(url, payload);
+    var response = await Config.apiPatchCall(url, payload);
     if (response['error']) {
-      print(response['data']);
       return "Error creating profile";
     }
     return "success";

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:ict4pwds_mobile/constants/config.dart';
 import 'package:ict4pwds_mobile/constants/themes.dart';
 import 'package:ict4pwds_mobile/models/pwd.dart';
@@ -27,6 +28,8 @@ class _SettingsState extends State<Settings> {
   }
 
   String url = "default";
+  final Uri _url = Uri.parse(
+      'https://www.freeprivacypolicy.com/live/9d9c3c10-b558-4d24-935a-38dddd96cd26');
 
   bool loggingOut = false;
   EdgeInsets tilePadding = const EdgeInsets.symmetric(
@@ -66,7 +69,11 @@ class _SettingsState extends State<Settings> {
             color: ArgonColors.inputSuccess,
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: 35, left: 15, right: 15, bottom: 15),
+                top: 35,
+                left: 15,
+                right: 15,
+                bottom: 15,
+              ),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -146,13 +153,17 @@ class _SettingsState extends State<Settings> {
                   icon: const Icon(Icons.people_outline_outlined),
                 ),
                 GFListTile(
-                    color: ArgonColors.bgColorScreen,
-                    margin: tileMarging,
-                    padding: tilePadding,
-                    titleText: 'Privacy and Info',
-                    subTitleText:
-                        'Info about your data safety, data handling and privacy policy',
-                    icon: const Icon(Icons.lock_outline)),
+                  onTap: () {
+                    _launchUrl();
+                  },
+                  color: ArgonColors.bgColorScreen,
+                  margin: tileMarging,
+                  padding: tilePadding,
+                  titleText: 'Privacy and Info',
+                  subTitleText:
+                      'Info about your data safety, data handling and privacy policy',
+                  icon: const Icon(Icons.lock_outline),
+                ),
                 GFListTile(
                     color: ArgonColors.bgColorScreen,
                     margin: tileMarging,
@@ -171,5 +182,11 @@ class _SettingsState extends State<Settings> {
         ],
       ),
     );
+  }
+
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url)) {
+      throw 'Could not launch $_url';
+    }
   }
 }

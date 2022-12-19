@@ -49,7 +49,6 @@ class _AdditionalState extends State<Additional> {
   int? id;
   int? activeUser;
   dynamic activeProfile;
-  //List<DropDownValueModel> regionList = const [];
   List<DropDownValueModel> educLevelList = const [];
   List<DropDownValueModel> districtList = const [];
   List<DropDownValueModel> disabilitiesList = const [];
@@ -90,23 +89,6 @@ class _AdditionalState extends State<Additional> {
         )
       },
     );
-
-    // var region = Pwd.getRegions().then(
-    //   (value) => {
-    //     setState(
-    //       () => {
-    //         regionList = List<DropDownValueModel>.from(
-    //           value.map(
-    //             (item) => DropDownValueModel(
-    //               name: item['name'],
-    //               value: item['id'],
-    //             ),
-    //           ),
-    //         ),
-    //       },
-    //     )
-    //   },
-    // );
 
     var educ = Pwd.getEduactionLevels().then(
       (value) => {
@@ -152,7 +134,7 @@ class _AdditionalState extends State<Additional> {
 
     await educ;
     DropDownValueModel educStatus = educLevelList.firstWhere(
-      (element) => element.value == activeProfile['highest_level_of_education'],
+      (element) => element.name == activeProfile['highest_level_of_education'],
       orElse: () => noMatch,
     );
     if (educStatus.value != null) {
@@ -161,7 +143,7 @@ class _AdditionalState extends State<Additional> {
 
     await dis;
     DropDownValueModel disStatus = disabilitiesList.firstWhere(
-      (element) => element.value == activeProfile['type_of_disability'][0],
+      (element) => element.name == activeProfile['type_of_disability'][0],
       orElse: () => noMatch,
     );
     if (disStatus.value != null) {
@@ -170,21 +152,12 @@ class _AdditionalState extends State<Additional> {
 
     await districts;
     DropDownValueModel districtStatus = districtList.firstWhere(
-      (element) => element.value == activeProfile['district'],
+      (element) => element.name == activeProfile['district'],
       orElse: () => noMatch,
     );
     if (districtStatus.value != null) {
       districtController.dropDownValue = districtStatus;
     }
-
-    // await region;
-    // DropDownValueModel regionStatus = regionList.firstWhere(
-    //   (element) => element.value == activeProfile['region'],
-    //   orElse: () => noMatch,
-    // );
-    // if (regionStatus.value != null) {
-    //   regionController.dropDownValue = regionStatus;
-    // }
   }
 
   @override
@@ -263,29 +236,6 @@ class _AdditionalState extends State<Additional> {
                             },
                           ),
                         ),
-                        // Padding(
-                        //   padding: labelPadding,
-                        //   child: const SizedBox(
-                        //     width: double.infinity,
-                        //     child: Text("Region"),
-                        //   ),
-                        // ),
-                        // SizedBox(
-                        //   width: double.infinity,
-                        //   child: regionList.isNotEmpty
-                        //       ? Select(
-                        //           validator: Helpers.validateText,
-                        //           dropDownList: regionList,
-                        //           searchEnabled: true,
-                        //           controller: regionController,
-                        //         )
-                        //       : const Padding(
-                        //           padding: EdgeInsets.only(top: 10),
-                        //           child: LinearProgressIndicator(
-                        //             color: ArgonColors.muted,
-                        //           ),
-                        //         ),
-                        // ),
                         Padding(
                           padding: labelPadding,
                           child: const SizedBox(
@@ -355,9 +305,12 @@ class _AdditionalState extends State<Additional> {
                                 submitProfile();
                               },
                               style: TextButton.styleFrom(
-                                  backgroundColor: ArgonColors.mainGreen,
-                                  padding: const EdgeInsets.only(
-                                      top: 15, bottom: 15)),
+                                backgroundColor: ArgonColors.mainGreen,
+                                padding: const EdgeInsets.only(
+                                  top: 15,
+                                  bottom: 15,
+                                ),
+                              ),
                               child: isLoading
                                   ? const SizedBox(
                                       height: 15,
